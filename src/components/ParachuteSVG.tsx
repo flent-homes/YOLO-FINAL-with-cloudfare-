@@ -1,11 +1,15 @@
-export const ParachuteSVG = () => (
+import { forwardRef } from "react";
+
+export const ParachuteSVG = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
   <svg
+    ref={ref}
     width="120"
     height="140"
     viewBox="0 0 120 140"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className="drop-shadow-lg"
+    {...props}
   >
     {/* Parachute canopy */}
     <path
@@ -48,4 +52,6 @@ export const ParachuteSVG = () => (
     <line x1="60" y1="120" x2="52" y2="135" stroke="#FFFFFF" strokeWidth="2" />
     <line x1="60" y1="120" x2="68" y2="135" stroke="#FFFFFF" strokeWidth="2" />
   </svg>
-);
+));
+
+ParachuteSVG.displayName = "ParachuteSVG";
