@@ -5,16 +5,12 @@ interface IntroOverlayProps {
 }
 
 export const IntroOverlay = ({ onDone }: IntroOverlayProps) => {
-  const dismiss = () => onDone();
-
   return (
     <div
       id="intro-overlay"
-      className="fixed inset-0 z-[9999] bg-dark-bg text-light-text grid place-content-center
-                 select-none pointer-events-none"
-      aria-hidden="true"
+      className="fixed inset-0 z-[9999] bg-dark-bg text-light-text grid place-content-center select-none"
     >
-      <div className="pointer-events-auto px-6 space-y-3 max-w-[68ch]">
+      <div className="px-6 text-center space-y-3 max-w-[68ch]">
         <h1 className="font-sans text-xl text-light-text">
           YOLO <span className="text-light-text/60 italic text-base">(slang)</span>
         </h1>
@@ -29,13 +25,6 @@ export const IntroOverlay = ({ onDone }: IntroOverlayProps) => {
             <span className="absolute inset-0 origin-top flip-in text-coral font-medium">resurrected</span>
           </span>
         </p>
-
-        <button
-          onClick={dismiss}
-          className="mt-8 text-sm text-light-text/60 hover:text-light-text transition pointer-events-auto"
-        >
-          Skip →
-        </button>
       </div>
 
       <AutoDismiss onDone={onDone} />
@@ -45,18 +34,23 @@ export const IntroOverlay = ({ onDone }: IntroOverlayProps) => {
 
 function AutoDismiss({ onDone }: { onDone: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 1600);
-    const end = () => onDone();
+    const overlay = document.getElementById("intro-overlay");
 
-    document.addEventListener("wheel", end, { once: true, passive: true });
-    document.addEventListener("touchstart", end, { once: true, passive: true });
-    document.addEventListener("keydown", end, { once: true });
+    // 800ms flip → then 2000ms pause → then 800ms fade
+    const totalDelay = 800 + 2000; // flip duration + pause
+    const fadeDuration = 800;
+
+    const fadeTimer = setTimeout(() => {
+      if (overlay) overlay.classList.add("fade-out");
+    }, totalDelay);
+
+    const removeTimer = setTimeout(() => {
+      onDone();
+    }, totalDelay + fadeDuration);
 
     return () => {
-      clearTimeout(t);
-      document.removeEventListener("wheel", end);
-      document.removeEventListener("touchstart", end);
-      document.removeEventListener("keydown", end);
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
     };
   }, [onDone]);
 

@@ -125,21 +125,27 @@ All colors MUST be HSL.
   
   /* Flip animations for Pre-hero */
   @keyframes flipOut {
-    0% { transform: rotateX(0); opacity: 1; }
+    0% { transform: rotateX(0deg); opacity: 1; }
     100% { transform: rotateX(90deg); opacity: 0; }
   }
 
   @keyframes flipIn {
     0% { transform: rotateX(-90deg); opacity: 0; }
-    100% { transform: rotateX(0); opacity: 1; }
+    100% { transform: rotateX(0deg); opacity: 1; }
   }
 
   .flip-out {
-    animation: flipOut 450ms 800ms both ease-out;
+    animation: flipOut 450ms 600ms both ease-out;
   }
 
   .flip-in {
-    animation: flipIn 450ms 1250ms both ease-out;
+    animation: flipIn 450ms 600ms both ease-out;
+  }
+
+  /* Fade out overlay transition */
+  #intro-overlay.fade-out {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
   }
 
   /* Teleprompter line states */
