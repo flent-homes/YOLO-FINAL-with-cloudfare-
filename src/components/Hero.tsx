@@ -108,7 +108,7 @@ export const Hero = () => {
               transform: "translateY(-0.05em)"
             }}
           />
-          {/* parachute - starts high above */}
+          {/* parachute - starts from top of screen */}
           <ParachuteIcon
             ref={chuteRef}
             className="absolute pointer-events-none"
@@ -118,7 +118,7 @@ export const Hero = () => {
               width: "64px",
               color: "#FFFFFF",
               zIndex: 3,
-              transform: "translate(-50%, -38svh)",
+              transform: "translate(-50%, -100vh)",
             }}
           />
         </p>
@@ -148,20 +148,20 @@ export const Hero = () => {
 
 /* ---------- animation ---------- */
 function runParachute(chute: Element, dot: HTMLElement) {
-  // Slow, smooth parachute fall with gentle S-curve swaying (6 seconds)
+  // Slow, smooth parachute fall from top of screen with gentle S-curve swaying (6 seconds)
   const fall = chute.animate(
     [
-      { transform: "translate(-50%, -38svh) rotate(0deg)", offset: 0 },
-      { transform: "translate(-42%, -34svh) rotate(6deg)", offset: 0.10 },
-      { transform: "translate(-35%, -30svh) rotate(10deg)", offset: 0.20 },
-      { transform: "translate(-32%, -25svh) rotate(12deg)", offset: 0.30 },
-      { transform: "translate(-38%, -20svh) rotate(8deg)", offset: 0.40 },
-      { transform: "translate(-48%, -15svh) rotate(0deg)", offset: 0.50 },
-      { transform: "translate(-58%, -11svh) rotate(-8deg)", offset: 0.60 },
-      { transform: "translate(-65%, -7svh) rotate(-12deg)", offset: 0.70 },
-      { transform: "translate(-62%, -4svh) rotate(-8deg)", offset: 0.80 },
-      { transform: "translate(-55%, -2svh) rotate(-3deg)", offset: 0.90 },
-      { transform: "translate(-50%, 0svh) rotate(0deg)", offset: 1 }
+      { transform: "translate(-50%, -100vh) rotate(0deg)", offset: 0 },
+      { transform: "translate(-45%, -85vh) rotate(5deg)", offset: 0.08 },
+      { transform: "translate(-40%, -70vh) rotate(8deg)", offset: 0.16 },
+      { transform: "translate(-35%, -55vh) rotate(10deg)", offset: 0.25 },
+      { transform: "translate(-38%, -42vh) rotate(7deg)", offset: 0.35 },
+      { transform: "translate(-48%, -30vh) rotate(0deg)", offset: 0.45 },
+      { transform: "translate(-58%, -20vh) rotate(-7deg)", offset: 0.58 },
+      { transform: "translate(-65%, -12vh) rotate(-10deg)", offset: 0.70 },
+      { transform: "translate(-62%, -6vh) rotate(-7deg)", offset: 0.82 },
+      { transform: "translate(-55%, -2vh) rotate(-2deg)", offset: 0.92 },
+      { transform: "translate(-50%, 0vh) rotate(0deg)", offset: 1 }
     ],
     { duration: 6000, easing: "cubic-bezier(0.25, 0.1, 0.25, 1)", fill: "forwards" }
   );
