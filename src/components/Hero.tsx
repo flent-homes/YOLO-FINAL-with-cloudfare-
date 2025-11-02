@@ -94,20 +94,27 @@ export const Hero = () => {
         </h1>
         <p className="font-display italic text-[clamp(24px,4.5vw,56px)] text-light-text/90 leading-none relative inline-block mt-2">
           Do it with Flent
-          {/* dynamic period dot (starts invisible) */}
+          {/* dynamic period dot (starts invisible) - matches heading period size */}
           <span
             ref={dotRef}
             aria-hidden="true"
-            className="inline-block align-baseline translate-y-[-0.12em] ml-[0.02em] opacity-0"
-            style={{ width: "0.5em", height: "0.5em", borderRadius: "9999px", background: "currentColor" }}
+            className="inline-block align-baseline opacity-0"
+            style={{ 
+              width: "0.15em", 
+              height: "0.15em", 
+              borderRadius: "9999px", 
+              background: "currentColor",
+              marginLeft: "0.05em",
+              transform: "translateY(-0.05em)"
+            }}
           />
-          {/* smaller parachute */}
+          {/* smaller parachute - starts visible */}
           <ParachuteIcon
             ref={chuteRef}
-            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none opacity-100"
             style={{
-              top: "-18svh",
-              width: "52px",
+              top: "-38svh",
+              width: "64px",
               color: "#FFFFFF",
               zIndex: 3,
             }}
@@ -139,15 +146,17 @@ export const Hero = () => {
 
 /* ---------- animation ---------- */
 function runParachute(chute: Element, dot: HTMLElement) {
-  // fall + gentle sway (visible the whole way)
+  // fall + gentle sway (visible the whole way) - 3+ seconds
   const fall = chute.animate(
     [
-      { transform: "translate(-50%, -18svh) rotate(0deg)" },
-      { transform: "translate(-49%, -8svh) rotate(3deg)" },
-      { transform: "translate(-51%, -2svh) rotate(-2.5deg)" },
+      { transform: "translate(-50%, -38svh) rotate(0deg)" },
+      { transform: "translate(-48%, -28svh) rotate(5deg)" },
+      { transform: "translate(-52%, -18svh) rotate(-4deg)" },
+      { transform: "translate(-48%, -8svh) rotate(3deg)" },
+      { transform: "translate(-51%, -2svh) rotate(-2deg)" },
       { transform: "translate(-50%, 0) rotate(0deg)" }
     ],
-    { duration: 900, easing: "cubic-bezier(.22,.84,.36,1)", fill: "forwards" }
+    { duration: 3200, easing: "cubic-bezier(.22,.84,.36,1)", fill: "forwards" }
   );
 
   fall.finished.then(() => {
@@ -155,11 +164,11 @@ function runParachute(chute: Element, dot: HTMLElement) {
       .animate(
         [
           { transform: "translate(-50%, 0) rotate(0deg)" },
-          { transform: "translate(calc(-50% - 1.5px), 0) rotate(-2deg)" },
-          { transform: "translate(calc(-50% + 1.5px), 0) rotate(1.5deg)" },
+          { transform: "translate(calc(-50% - 2px), 0) rotate(-2deg)" },
+          { transform: "translate(calc(-50% + 2px), 0) rotate(1.5deg)" },
           { transform: "translate(-50%, 0) rotate(0deg)" }
         ],
-        { duration: 360, easing: "ease-out", fill: "forwards" }
+        { duration: 450, easing: "ease-out", fill: "forwards" }
       )
       .finished.then(() => morphToPeriod(chute as HTMLElement, dot));
   });
