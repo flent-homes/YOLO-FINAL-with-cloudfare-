@@ -32,19 +32,23 @@ export const Hero = () => {
 
     // Respect reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      chuteRef.current!.style.opacity = "0";
-      dotRef.current!.style.opacity = "1";
-      dotRef.current!.style.color = "#FF6A3D";
+      if (chuteRef.current) chuteRef.current.style.opacity = "0";
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "1";
+        dotRef.current.style.color = "#FF6A3D";
+      }
       return () => clearTimeout(navTimer);
     }
 
-    const hero = heroRef.current!;
-    const chute = chuteRef.current!;
-    const dot = dotRef.current!;
+    const hero = heroRef.current;
+    if (!hero) return () => clearTimeout(navTimer);
+
     let played = false;
 
     const play = () => {
-      if (played) return;
+      const chute = chuteRef.current;
+      const dot = dotRef.current;
+      if (played || !chute || !dot) return;
       played = true;
       runParachute(chute, dot);
     };
