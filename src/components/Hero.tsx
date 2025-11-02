@@ -4,19 +4,32 @@ import React, { useEffect, useRef, useState, forwardRef } from "react";
 const ParachuteIcon = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => {
   return (
     <svg ref={ref} viewBox="0 0 64 64" aria-hidden="true" {...props}>
-      <path d="M8 20 C 24 4, 40 4, 56 20" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M8 20 Q 32 8 56 20 L 8 20 Z" fill="currentColor"/>
-      <text x="32" y="17" textAnchor="middle" fontSize="6" fill="#000"
-            style={{fontFamily:"Plus Jakarta Sans,system-ui"}}>FLENT</text>
-      <line x1="32" y1="20" x2="32" y2="32" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="24" y1="20" x2="32" y2="32" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="40" y1="20" x2="32" y2="32" stroke="currentColor" strokeWidth="1.5"/>
-      <circle cx="32" cy="36" r="2" fill="currentColor"/>
-      <line x1="32" y1="38" x2="32" y2="46" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="32" y1="40.5" x2="26.5" y2="44" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="32" y1="40.5" x2="37.5" y2="44" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="32" y1="46" x2="28" y2="52" stroke="currentColor" strokeWidth="1.5"/>
-      <line x1="32" y1="46" x2="36" y2="52" stroke="currentColor" strokeWidth="1.5"/>
+      {/* White parachute canopy */}
+      <path d="M8 20 C 24 4, 40 4, 56 20" fill="none" stroke="#FFFFFF" strokeWidth="2"/>
+      <path d="M8 20 Q 32 8 56 20 L 8 20 Z" fill="#FFFFFF"/>
+      {/* FLENT text - bold and visible */}
+      <text 
+        x="32" 
+        y="18" 
+        textAnchor="middle" 
+        fontSize="8" 
+        fontWeight="900"
+        fill="#0A0A0A"
+        style={{fontFamily:"Plus Jakarta Sans,system-ui",letterSpacing:"0.5px"}}
+      >
+        FLENT
+      </text>
+      {/* Parachute lines */}
+      <line x1="32" y1="20" x2="32" y2="32" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="24" y1="20" x2="32" y2="32" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="40" y1="20" x2="32" y2="32" stroke="#FFFFFF" strokeWidth="1.5"/>
+      {/* Stick figure */}
+      <circle cx="32" cy="36" r="2" fill="#FFFFFF"/>
+      <line x1="32" y1="38" x2="32" y2="46" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="32" y1="40.5" x2="26.5" y2="44" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="32" y1="40.5" x2="37.5" y2="44" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="32" y1="46" x2="28" y2="52" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="32" y1="46" x2="36" y2="52" stroke="#FFFFFF" strokeWidth="1.5"/>
     </svg>
   );
 });
@@ -108,17 +121,17 @@ export const Hero = () => {
               transform: "translateY(-0.05em)"
             }}
           />
-          {/* parachute - starts from top of screen */}
+          {/* parachute - starts from very top of screen */}
           <ParachuteIcon
             ref={chuteRef}
             className="absolute pointer-events-none"
             style={{
               left: "100%",
               top: "0",
-              width: "64px",
+              width: "72px",
               color: "#FFFFFF",
               zIndex: 3,
-              transform: "translate(-50%, -100vh)",
+              transform: "translate(-50%, -120vh)",
             }}
           />
         </p>
@@ -148,18 +161,18 @@ export const Hero = () => {
 
 /* ---------- animation ---------- */
 function runParachute(chute: Element, dot: HTMLElement) {
-  // Slow, smooth parachute fall from top of screen with gentle S-curve swaying (6 seconds)
+  // Slow, smooth parachute fall from very top of screen with gentle S-curve swaying (6 seconds)
   const fall = chute.animate(
     [
-      { transform: "translate(-50%, -100vh) rotate(0deg)", offset: 0 },
-      { transform: "translate(-45%, -85vh) rotate(5deg)", offset: 0.08 },
-      { transform: "translate(-40%, -70vh) rotate(8deg)", offset: 0.16 },
-      { transform: "translate(-35%, -55vh) rotate(10deg)", offset: 0.25 },
-      { transform: "translate(-38%, -42vh) rotate(7deg)", offset: 0.35 },
-      { transform: "translate(-48%, -30vh) rotate(0deg)", offset: 0.45 },
-      { transform: "translate(-58%, -20vh) rotate(-7deg)", offset: 0.58 },
-      { transform: "translate(-65%, -12vh) rotate(-10deg)", offset: 0.70 },
-      { transform: "translate(-62%, -6vh) rotate(-7deg)", offset: 0.82 },
+      { transform: "translate(-50%, -120vh) rotate(0deg)", offset: 0 },
+      { transform: "translate(-45%, -100vh) rotate(5deg)", offset: 0.08 },
+      { transform: "translate(-40%, -80vh) rotate(8deg)", offset: 0.16 },
+      { transform: "translate(-35%, -60vh) rotate(10deg)", offset: 0.25 },
+      { transform: "translate(-38%, -45vh) rotate(7deg)", offset: 0.35 },
+      { transform: "translate(-48%, -32vh) rotate(0deg)", offset: 0.45 },
+      { transform: "translate(-58%, -22vh) rotate(-7deg)", offset: 0.58 },
+      { transform: "translate(-65%, -14vh) rotate(-10deg)", offset: 0.70 },
+      { transform: "translate(-62%, -7vh) rotate(-7deg)", offset: 0.82 },
       { transform: "translate(-55%, -2vh) rotate(-2deg)", offset: 0.92 },
       { transform: "translate(-50%, 0vh) rotate(0deg)", offset: 1 }
     ],
