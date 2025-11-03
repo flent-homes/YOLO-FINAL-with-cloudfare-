@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +11,8 @@ const StoryStepper = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const isScrolling = useRef(false);
 
   useEffect(() => {
     if (!textRef.current || !wrapperRef.current || !containerRef.current) return;
@@ -36,41 +38,66 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    // Create smooth scroll-triggered animation - starts when section reaches top
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: "+=4000",
-      scrub: 0.5,
-      pin: false,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const revealedCount = Math.floor(progress * totalWords);
-        const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
+    // Update animation based on scroll progress
+    const updateAnimation = (progress: number) => {
+      const revealedCount = Math.floor(progress * totalWords);
+      const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
+      
+      // Move text up smoothly
+      const translateY = -(progress * 150);
+      gsap.set(wrapperRef.current, { y: `${translateY}%` });
+      
+      // Show next chunk as ghost
+      words.slice(0, nextChunkEnd).forEach(word => {
+        gsap.set(word, { visibility: "visible" });
+      });
+      
+      // Fill revealed words
+      words.slice(0, revealedCount).forEach(word => {
+        gsap.set(word, { opacity: 1 });
+      });
+      
+      // Ghost for upcoming words
+      words.slice(revealedCount, nextChunkEnd).forEach(word => {
+        gsap.set(word, { opacity: 0.15 });
+      });
+    };
+
+    // Handle wheel/touch events for independent scroll
+    const handleWheel = (e: WheelEvent) => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
+
+      if (isInView && !isScrolling.current) {
+        e.preventDefault();
+        e.stopPropagation();
         
-        // Move text up smoothly - increased distance for more visible effect
-        const translateY = -(progress * 150);
-        gsap.set(wrapperRef.current, { y: `${translateY}%` });
-        
-        // Show next chunk as ghost
-        words.slice(0, nextChunkEnd).forEach(word => {
-          gsap.set(word, { visibility: "visible" });
-        });
-        
-        // Fill revealed words
-        words.slice(0, revealedCount).forEach(word => {
-          gsap.set(word, { opacity: 1 });
-        });
-        
-        // Ghost for upcoming words
-        words.slice(revealedCount, nextChunkEnd).forEach(word => {
-          gsap.set(word, { opacity: 0.15 });
+        const delta = e.deltaY > 0 ? 0.02 : -0.02;
+        setScrollProgress(prev => {
+          const newProgress = Math.max(0, Math.min(1, prev + delta));
+          updateAnimation(newProgress);
+          
+          // Release scroll at the end
+          if (newProgress >= 1 && delta > 0) {
+            isScrolling.current = true;
+            setTimeout(() => {
+              isScrolling.current = false;
+            }, 100);
+            return 1;
+          }
+          
+          return newProgress;
         });
       }
-    });
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      scrollTrigger.kill();
+      window.removeEventListener("wheel", handleWheel as EventListener);
       splitText.revert();
     };
   }, []);
