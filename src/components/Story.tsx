@@ -93,7 +93,10 @@ const StoryStepper = () => {
                   style={{
                     fontSize: 'clamp(20px, 2.8vw, 38px)',
                     lineHeight: '1.5',
-                    letterSpacing: '0.005em'
+                    letterSpacing: '0.005em',
+                    wordBreak: 'keep-all',
+                    overflowWrap: 'normal',
+                    hyphens: 'none'
                   }}
                   dangerouslySetInnerHTML={{ __html: p.html }}
                 />
