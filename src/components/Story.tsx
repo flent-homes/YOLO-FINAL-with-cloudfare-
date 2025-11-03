@@ -48,8 +48,8 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalWords);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
-        // Subtle upward movement - just enough to see progress
-        const translateY = -(progress * 40);
+        // Subtle upward movement - enough to show the last line
+        const translateY = -(progress * 80);
         gsap.set(wrapperRef.current, { y: `${translateY}%` });
         
         // Show next chunk as ghost
