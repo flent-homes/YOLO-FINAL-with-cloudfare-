@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // LOCKED VALUES - DO NOT CHANGE
 const STORY_START_POSITION = 97; // Starting position percentage
-const STORY_MOVEMENT_RANGE = 218; // Total movement range percentage
+const STORY_MOVEMENT_RANGE = 220; // Total movement range percentage
 
 const StoryStepper = () => {
   const textRef = useRef<HTMLDivElement>(null);
