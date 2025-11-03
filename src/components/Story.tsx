@@ -1,26 +1,33 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import { PARAGRAPHS } from "@/data/storyCopy";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PARAGRAPHS = [
-  { html: `"Refer and earn up to this"<br>"Refer and earn up to that"` },
-  { html: `You and I both know all the ifs and buts that come with 'up to' offers. And for some reason, you always sniff that there's something wrong.` },
-  { html: `Same story when you move homes.` },
-  { html: `There are none when you do it with Flent. Because <em>experience</em> has always been at the center of what Flent does, and I'm carrying that same energy into the world of our referral program.` },
-  { html: `<strong>YOLO by Flent</strong> is that corner of the internet where referral rewards feel less transactional, more experiential (hint: rewards that don't fit in a cart)` },
-  { html: `If I design the way you should live with intention, so should the way I thank you for referring to it.` },
-  { html: `- (not so genZ) marketer, Flent` },
-  { html: `Also, yes, some slang dies and should stay dead – this one included. But I couldn't find a better word for that split-second energy of the "f-it, let's do it" moment – the one I want you to have too.` },
-];
-
 const StoryStepper = () => {
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [allDone, setAllDone] = useState(false);
+
+  // Scroll lock until animation completes
+  useEffect(() => {
+    const lock = (e: WheelEvent) => e.preventDefault();
+    if (!allDone) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("wheel", lock, { passive: false });
+    } else {
+      document.body.style.overflow = "";
+      window.removeEventListener("wheel", lock);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("wheel", lock);
+    };
+  }, [allDone]);
 
   useEffect(() => {
     if (!textRef.current || !wrapperRef.current || !containerRef.current) return;
@@ -58,6 +65,11 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalChars);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalChars);
         
+        // Check if animation is complete
+        if (progress >= 0.99 && !allDone) {
+          setAllDone(true);
+        }
+        
         // Move text up smoothly
         const translateY = -(progress * 30);
         gsap.set(wrapperRef.current, { y: translateY });
@@ -83,7 +95,7 @@ const StoryStepper = () => {
       scrollTrigger.kill();
       splitText.revert();
     };
-  }, []);
+  }, [allDone, setAllDone]);
 
   return (
     <div ref={containerRef} className="relative min-h-[200vh]">
@@ -99,7 +111,12 @@ const StoryStepper = () => {
               {PARAGRAPHS.map((p, idx) => (
                 <div
                   key={idx}
-                  className="relative mb-6 text-[clamp(20px,2vw,30px)] leading-[1.5] text-dark-text"
+                  className="relative mb-6 text-dark-text"
+                  style={{
+                    fontSize: 'clamp(22px, 3.2vw, 44px)',
+                    lineHeight: '1.45',
+                    letterSpacing: '0.005em'
+                  }}
                   dangerouslySetInnerHTML={{ __html: p.html }}
                 />
               ))}
