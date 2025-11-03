@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedRoute } from "./AnimatedRoute";
@@ -11,15 +11,19 @@ export const FinalWhite = () => {
   const [isExpired, setIsExpired] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const { toast } = useToast();
+  const finalRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: finalRef,
+    offset: ["start end", "end start"]
+  });
   
   // Enhanced parallax effects for Final section
-  const routeY = useTransform(scrollYProgress, [0.65, 0.8, 0.95], [120, 0, -60]);
-  const routeOpacity = useTransform(scrollYProgress, [0.65, 0.75, 0.95], [0, 1, 0.8]);
-  const formY = useTransform(scrollYProgress, [0.65, 0.8, 0.95], [80, 0, -40]);
-  const formOpacity = useTransform(scrollYProgress, [0.65, 0.75, 0.95], [0, 1, 0.8]);
-  const formScale = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
+  const routeY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [120, 0, 0, -60]);
+  const routeOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.5]);
+  const formY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [80, 0, 0, -40]);
+  const formOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.5]);
+  const formScale = useTransform(scrollYProgress, [0, 0.3], [0.9, 1]);
 
   useEffect(() => {
     // Dec 3, 2025 23:59:00 IST = UTC+5:30
@@ -65,7 +69,7 @@ export const FinalWhite = () => {
 
   return (
     <>
-      <section id="final" className="relative min-h-screen bg-light-bg py-20">
+      <section ref={finalRef} id="final" className="relative min-h-screen bg-light-bg py-20">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-5 gap-12 items-center">
             {/* Left: Animated Route */}

@@ -64,8 +64,8 @@ export const Hero = () => {
     offset: ["start start", "end start"]
   });
   
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.3]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5, 1], [0, -100, -200]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1, 0.5, 0]);
 
   useEffect(() => {
     const navTimer = setTimeout(() => setShowNavigation(true), 2000);

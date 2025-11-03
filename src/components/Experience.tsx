@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart, MessageCircle, Send, Bookmark } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -11,15 +11,19 @@ export const Experience = () => {
   const [showBookmark, setShowBookmark] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const { toast } = useToast();
+  const experienceRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: experienceRef,
+    offset: ["start end", "end start"]
+  });
   
   // Enhanced parallax effects for Experience section
-  const overlayOpacity = useTransform(scrollYProgress, [0.35, 0.45, 0.65, 0.75], [0, 0.12, 0.12, 0]);
-  const frameY = useTransform(scrollYProgress, [0.35, 0.5, 0.7], [150, 0, -100]);
-  const frameScale = useTransform(scrollYProgress, [0.35, 0.5, 0.7], [0.9, 1, 0.95]);
-  const frameOpacity = useTransform(scrollYProgress, [0.35, 0.45, 0.7, 0.8], [0, 1, 1, 0.6]);
-  const iconsY = useTransform(scrollYProgress, [0.45, 0.6], [40, 0]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 0.12, 0.12, 0]);
+  const frameY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [150, 0, 0, -100]);
+  const frameScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.85, 1, 1, 0.95]);
+  const frameOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.3]);
+  const iconsY = useTransform(scrollYProgress, [0.2, 0.5], [40, 0]);
 
   const handleLike = async () => {
     setLiked(!liked);
@@ -111,7 +115,7 @@ export const Experience = () => {
 
   return (
     <>
-      <section id="experience" className="relative min-h-screen bg-dark-bg flex items-center justify-center py-20">
+      <section ref={experienceRef} id="experience" className="relative min-h-screen bg-dark-bg flex items-center justify-center py-20">
         {/* L1: Overlay */}
         <motion.div
           data-depth="0.15"

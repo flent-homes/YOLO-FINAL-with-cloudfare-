@@ -109,9 +109,8 @@ export const AnimatedRoute = () => {
         {/* Animated plane */}
         {isAnimating && (
           <motion.g
-            initial={{ offsetDistance: "0%", opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={{
-              offsetDistance: ["0%", "35%", "35%", "70%", "70%", "100%"],
               opacity: [0, 1, 1, 1, 1, 0],
               rotate: [0, 0, 0, 0, 0, -20],
               y: [0, 0, 0, 0, 0, -8],
@@ -122,7 +121,10 @@ export const AnimatedRoute = () => {
               times: [0, 0.25, 0.35, 0.6, 0.7, 1],
               ease: "easeInOut",
             }}
-            style={{ offsetPath: "path('M 50 50 Q 100 150, 150 200 Q 200 250, 150 350 Q 100 400, 50 450 Q 120 440, 200 420')" }}
+            style={{ 
+              offsetPath: "path('M 50 50 Q 100 150, 150 200 Q 200 250, 150 350 Q 100 400, 50 450 Q 120 440, 200 420')",
+              offsetDistance: "0%"
+            }}
           >
             <path
               d="M -10 0 L 10 0 L 12 -8 L -12 -8 Z M 0 -3 L -8 2 M 0 -3 L 8 2"
