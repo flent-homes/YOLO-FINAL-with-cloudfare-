@@ -49,7 +49,7 @@ const StoryStepper = () => {
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
         // Move text up - start at 93%
-        const translateY = 93 - (progress * 233);
+        const translateY = 93 - (progress * 225);
         gsap.set(wrapperRef.current, { y: `${translateY}%`, force3D: true });
         
         // Show next chunk as ghost
