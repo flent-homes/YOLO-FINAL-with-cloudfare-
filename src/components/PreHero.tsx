@@ -7,11 +7,11 @@ export const PreHero = () => {
         <p className="font-sans text-base text-light-text/70">
           — A phrase from the early 2010s, meaning <span className="text-light-text">"You Only Live Once."</span>
         </p>
-        <p className="font-sans text-base text-light-text/70 mt-6 flex items-baseline gap-1.5">
+        <p className="font-sans text-base text-light-text/70 mt-6 flex items-baseline gap-1">
           Status:{" "}
           <span className="inline-block relative w-[10ch] h-[1.4em] leading-[1.4em]">
-            <span className="absolute inset-0 origin-bottom flip-out text-light-text/50 line-through leading-[1.4em]">deceased</span>
-            <span className="absolute inset-0 origin-top flip-in text-coral font-medium leading-[1.4em]">resurrected</span>
+            <span className="absolute inset-0 origin-bottom flip-out text-light-text/50 leading-[1.4em]">Deceased</span>
+            <span className="absolute inset-0 origin-top flip-in text-coral font-medium leading-[1.4em]">Resurrected</span>
           </span>
         </p>
       </div>
