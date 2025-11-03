@@ -50,7 +50,7 @@ const StoryStepper = () => {
         
         // Move text up enough to show the last line completely
         const translateY = -(progress * 140);
-        gsap.set(wrapperRef.current, { y: `${translateY}%` });
+        gsap.set(wrapperRef.current, { y: `${translateY}%`, force3D: true });
         
         // Show next chunk as ghost
         words.slice(0, nextChunkEnd).forEach(word => {
@@ -82,7 +82,7 @@ const StoryStepper = () => {
   return (
     <div ref={containerRef} className="relative min-h-[250vh]">
       <div className="sticky top-0 h-screen flex items-center">
-        <div ref={wrapperRef} className="relative w-full">
+        <div ref={wrapperRef} className="relative w-full will-change-transform">
           {/* top/bottom fades */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[18vh] bg-gradient-to-b from-light-bg to-transparent z-10" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
