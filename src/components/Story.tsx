@@ -40,7 +40,7 @@ const StoryStepper = () => {
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "+=4000",
+      end: "+=5000",
       scrub: 0.5,
       pin: false,
       onUpdate: (self) => {
@@ -48,7 +48,9 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalWords);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
-        // No movement - text stays in place
+        // Subtle upward movement - just enough to see progress
+        const translateY = -(progress * 40);
+        gsap.set(wrapperRef.current, { y: `${translateY}%` });
         
         // Show next chunk as ghost
         words.slice(0, nextChunkEnd).forEach(word => {
@@ -74,7 +76,7 @@ const StoryStepper = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-[250vh]">
+    <div ref={containerRef} className="relative min-h-[300vh]">
       <div className="sticky top-0 h-screen flex items-center">
         <div ref={wrapperRef} className="relative w-full">
           {/* top/bottom fades */}
@@ -122,7 +124,7 @@ export const Story = () => {
     <section
       id="story"
       ref={containerRef}
-      className="relative min-h-[250vh] bg-light-bg"
+      className="relative min-h-[300vh] bg-light-bg"
     >
       <div className="sticky top-0 h-screen flex items-center">
         <motion.div 
