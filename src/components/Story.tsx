@@ -76,7 +76,7 @@ const StoryStepper = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-[350vh]">
+    <div ref={containerRef} className="relative min-h-[250vh]">
       <div className="sticky top-0 h-screen flex items-center">
         <div ref={wrapperRef} className="relative w-full">
           {/* top/bottom fades */}
@@ -124,7 +124,7 @@ export const Story = () => {
     <section
       id="story"
       ref={containerRef}
-      className="relative min-h-[350vh] bg-light-bg"
+      className="relative min-h-[250vh] bg-light-bg"
     >
       <div className="sticky top-0 h-screen flex items-center">
         <motion.div 
