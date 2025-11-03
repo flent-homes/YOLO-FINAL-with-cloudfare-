@@ -67,11 +67,15 @@ const StoryStepper = () => {
     if (!vp) return;
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!allDone && e.deltaY > 0) {
-        handleNext();
+      // Only intercept scroll if animation not done
+      if (!allDone) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.deltaY > 0) {
+          handleNext();
+        }
       }
+      // When allDone, let scroll pass through naturally
     };
 
     let touchStartY = 0;
@@ -80,12 +84,14 @@ const StoryStepper = () => {
     };
     
     const onTouchMove = (e: TouchEvent) => {
-      const dy = touchStartY - e.touches[0].clientY;
-      if (Math.abs(dy) > 10 && !allDone && dy > 0) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleNext();
-        touchStartY = e.touches[0].clientY;
+      if (!allDone) {
+        const dy = touchStartY - e.touches[0].clientY;
+        if (Math.abs(dy) > 10 && dy > 0) {
+          e.preventDefault();
+          e.stopPropagation();
+          handleNext();
+          touchStartY = e.touches[0].clientY;
+        }
       }
     };
 
