@@ -66,7 +66,7 @@ export const AnimatedRoute = () => {
             fontFamily="Plus Jakarta Sans, sans-serif"
             className="select-none"
           >
-            Share Flent Homes with 5 friends.
+            Share Flent Homes with <tspan fontWeight="700">5 friends</tspan>.
           </text>
         </g>
 
@@ -84,7 +84,7 @@ export const AnimatedRoute = () => {
             fontFamily="Plus Jakarta Sans, sans-serif"
             className="select-none"
           >
-            They book with your name + number.
+            They book with your <tspan fontWeight="700">name</tspan> and <tspan fontWeight="700">number</tspan>.
           </text>
         </g>
 
@@ -102,7 +102,7 @@ export const AnimatedRoute = () => {
             fontFamily="Plus Jakarta Sans, sans-serif"
             className="select-none"
           >
-            You win the GOAT Tour India trip.
+            You win the <tspan fontWeight="700">GOAT Tour</tspan> India trip.
           </text>
         </g>
 
