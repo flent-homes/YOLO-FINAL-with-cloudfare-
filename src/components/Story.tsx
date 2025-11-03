@@ -49,7 +49,7 @@ const StoryStepper = () => {
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
         // Move text up enough to show the last line completely
-        const translateY = -(progress * 200);
+        const translateY = -(progress * 170);
         gsap.set(wrapperRef.current, { y: `${translateY}%` });
         
         // Show next chunk as ghost
