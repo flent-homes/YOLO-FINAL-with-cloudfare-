@@ -51,8 +51,6 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    let isComplete = false;
-
     // Create scroll-triggered animation
     ScrollTrigger.create({
       trigger: containerRef.current,
@@ -83,42 +81,15 @@ const StoryStepper = () => {
         chars.slice(revealedCount, nextChunkEnd).forEach(char => {
           gsap.set(char, { opacity: 0.15 });
         });
-
-        // Check if complete
-        isComplete = progress >= 0.99;
-      },
-      onLeave: () => {
-        // Allow scrolling to next section only when complete
-        if (isComplete) {
-          ScrollTrigger.getAll().forEach(st => {
-            if (st.trigger === containerRef.current) {
-              st.disable();
-            }
-          });
-        }
       }
     });
 
-    // Block scroll until animation complete
-    const blockScroll = (e: WheelEvent) => {
-      const scrollTriggers = ScrollTrigger.getAll();
-      const ourTrigger = scrollTriggers.find(st => st.trigger === containerRef.current);
-      
-      if (ourTrigger && !isComplete && e.deltaY > 0) {
-        // Only block downward scroll
-        const progress = ourTrigger.progress;
-        if (progress < 0.99) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }
-    };
-
-    window.addEventListener('wheel', blockScroll, { passive: false });
-
     return () => {
-      window.removeEventListener('wheel', blockScroll);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.trigger === containerRef.current) {
+          trigger.kill();
+        }
+      });
       splitText.revert();
     };
   }, []);
