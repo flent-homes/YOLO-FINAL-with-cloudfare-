@@ -13,8 +13,13 @@ export const FinalWhite = () => {
   const { toast } = useToast();
 
   const { scrollYProgress } = useScroll();
-  const routeY = useTransform(scrollYProgress, [0.7, 0.9], [0, 24]);
-  const formY = useTransform(scrollYProgress, [0.7, 0.9], [0, 12]);
+  
+  // Enhanced parallax effects for Final section
+  const routeY = useTransform(scrollYProgress, [0.65, 0.8, 0.95], [120, 0, -60]);
+  const routeOpacity = useTransform(scrollYProgress, [0.65, 0.75, 0.95], [0, 1, 0.8]);
+  const formY = useTransform(scrollYProgress, [0.65, 0.8, 0.95], [80, 0, -40]);
+  const formOpacity = useTransform(scrollYProgress, [0.65, 0.75, 0.95], [0, 1, 0.8]);
+  const formScale = useTransform(scrollYProgress, [0.65, 0.8], [0.95, 1]);
 
   useEffect(() => {
     // Dec 3, 2025 23:59:00 IST = UTC+5:30
@@ -66,7 +71,7 @@ export const FinalWhite = () => {
             {/* Left: Animated Route */}
             <motion.div
               data-depth="0.15"
-              style={{ y: routeY }}
+              style={{ y: routeY, opacity: routeOpacity }}
               className="md:col-span-2"
             >
               <AnimatedRoute />
@@ -75,7 +80,7 @@ export const FinalWhite = () => {
             {/* Right: Form */}
             <motion.div
               data-depth="0.3"
-              style={{ y: formY }}
+              style={{ y: formY, opacity: formOpacity, scale: formScale }}
               className="md:col-span-3"
             >
               <div className="max-w-md mx-auto">

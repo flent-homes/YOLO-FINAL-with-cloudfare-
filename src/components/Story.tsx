@@ -27,9 +27,12 @@ export const Story = () => {
     offset: ["start end", "end start"],
   });
 
-  const titleY = useTransform(scrollYProgress, [0, 1], [0, 40]);
-  const ruleY = useTransform(scrollYProgress, [0, 1], [0, 18]);
-  const coralRuleY = useTransform(scrollYProgress, [0.3, 0.7], [0, 24]);
+  // Enhanced parallax effects
+  const titleY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -80]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.5]);
+  const ruleY = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -40]);
+  const coralRuleY = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [60, 0, -50]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.95, 1, 1, 0.98]);
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -83,11 +86,14 @@ export const Story = () => {
       className="relative min-h-[200vh] bg-light-bg"
     >
       <div className="sticky top-0 h-screen flex items-center">
-        <div className="container mx-auto px-6 grid md:grid-cols-5 gap-12 items-center">
+        <motion.div 
+          style={{ scale: contentScale }}
+          className="container mx-auto px-6 grid md:grid-cols-5 gap-12 items-center"
+        >
           {/* Left: Title with parallax */}
           <motion.div
             data-depth="0.3"
-            style={{ y: titleY }}
+            style={{ y: titleY, opacity: titleOpacity }}
             className="md:col-span-2"
           >
             <h2 className="text-6xl md:text-7xl lg:text-8xl font-display text-dark-text leading-none">
@@ -136,7 +142,7 @@ export const Story = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

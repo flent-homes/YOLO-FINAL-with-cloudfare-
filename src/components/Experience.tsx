@@ -13,9 +13,13 @@ export const Experience = () => {
   const { toast } = useToast();
 
   const { scrollYProgress } = useScroll();
-  const overlayOpacity = useTransform(scrollYProgress, [0.4, 0.5], [0, 0.12]);
-  const frameY = useTransform(scrollYProgress, [0.45, 0.55], [-40, 16]);
-  const iconsY = useTransform(scrollYProgress, [0.45, 0.55], [0, 28]);
+  
+  // Enhanced parallax effects for Experience section
+  const overlayOpacity = useTransform(scrollYProgress, [0.35, 0.45, 0.65, 0.75], [0, 0.12, 0.12, 0]);
+  const frameY = useTransform(scrollYProgress, [0.35, 0.5, 0.7], [150, 0, -100]);
+  const frameScale = useTransform(scrollYProgress, [0.35, 0.5, 0.7], [0.9, 1, 0.95]);
+  const frameOpacity = useTransform(scrollYProgress, [0.35, 0.45, 0.7, 0.8], [0, 1, 1, 0.6]);
+  const iconsY = useTransform(scrollYProgress, [0.45, 0.6], [40, 0]);
 
   const handleLike = async () => {
     setLiked(!liked);
@@ -118,7 +122,7 @@ export const Experience = () => {
         {/* L2: IG Frame */}
         <motion.div
           data-depth="0.3"
-          style={{ y: frameY }}
+          style={{ y: frameY, scale: frameScale, opacity: frameOpacity }}
           className="relative w-full px-6"
         >
           <div

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 /* Inline parachute matching reference SVG design */
 const ParachuteIcon = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => {
@@ -56,6 +57,15 @@ export const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const chuteRef = useRef<SVGSVGElement>(null);
   const dotRef = useRef<HTMLSpanElement>(null);
+
+  // Parallax effect for hero exit
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.3]);
 
   useEffect(() => {
     const navTimer = setTimeout(() => setShowNavigation(true), 2000);
@@ -116,7 +126,10 @@ export const Hero = () => {
       className="relative min-h-screen bg-dark-bg text-light-text grid place-items-center"
       style={{ overflow: "visible", zIndex: 1 }}
     >
-      <div className="text-center leading-[1.05] px-6 relative">
+      <motion.div 
+        style={{ y: heroY, opacity: heroOpacity }}
+        className="text-center leading-[1.05] px-6 relative"
+      >
         <h1 className="font-display text-[clamp(40px,8vw,112px)] text-light-text leading-none mb-2">
           You only live once.
         </h1>
@@ -150,7 +163,7 @@ export const Hero = () => {
             }}
           />
         </p>
-      </div>
+      </motion.div>
 
       {/* Navigation */}
       {showNavigation && (
