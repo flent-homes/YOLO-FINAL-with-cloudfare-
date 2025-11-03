@@ -148,22 +148,20 @@ All colors MUST be HSL.
     transition: opacity 0.8s ease-out;
   }
 
-  /* Story line layers - chunked block reveal */
+  /* Story line layers - chunked block reveal with nudge */
   .ghost {
     color: rgba(10, 10, 10, 0.18);
     -webkit-text-stroke: 0.5px rgba(10, 10, 10, 0.25);
     text-stroke: 0.5px rgba(10, 10, 10, 0.25);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   .solid {
-    position: absolute;
-    inset: 0;
     color: #0A0A0A;
-    transition: clip-path 0.28s steps(var(--chunks, 3), end);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.32s steps(var(--chunks, 3), end);
     will-change: clip-path;
-  }
-
-  .solid, .ghost {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
