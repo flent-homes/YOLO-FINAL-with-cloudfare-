@@ -38,7 +38,6 @@ const StoryStepper = () => {
 
     const totalChars = chars.length;
     const chunkSize = Math.ceil(totalChars * 0.3); // 30% per scroll
-    let isComplete = false;
 
     // Set initial state - first chunk visible and being filled
     gsap.set(chars, { 
@@ -46,25 +45,25 @@ const StoryStepper = () => {
       visibility: "hidden"
     });
     
-    // Show first chunk as ghost and make visible from start
+    // Show first chunk as ghost from the start
     gsap.set(chars.slice(0, chunkSize), {
       opacity: 0.15,
       visibility: "visible"
     });
 
-    // Create scroll-triggered animation
+    // Create smooth scroll-triggered animation
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top center",
-      end: "+=5000",
-      scrub: 1,
+      end: "+=4000",
+      scrub: 0.5,
       pin: false,
       onUpdate: (self) => {
         const progress = self.progress;
         const revealedCount = Math.floor(progress * totalChars);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalChars);
         
-        // Move text up as we progress
+        // Move text up smoothly
         const translateY = -(progress * 30);
         gsap.set(wrapperRef.current, { y: translateY });
         
@@ -82,32 +81,10 @@ const StoryStepper = () => {
         chars.slice(revealedCount, nextChunkEnd).forEach(char => {
           gsap.set(char, { opacity: 0.15 });
         });
-
-        // Only mark complete when 100% done
-        isComplete = progress >= 0.99;
       }
     });
 
-    // Block scrolling to next section until story is complete
-    const blockScroll = (e: WheelEvent) => {
-      if (isComplete) return;
-
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-
-      // Only block if we're actively viewing the Story section
-      const inView = rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5;
-      
-      if (inView && e.deltaY > 0) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
-    window.addEventListener('wheel', blockScroll, { passive: false });
-
     return () => {
-      window.removeEventListener('wheel', blockScroll);
       scrollTrigger.kill();
       splitText.revert();
     };
