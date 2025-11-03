@@ -6,16 +6,16 @@ import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Full copy text with exact line breaks */
-const COPY_TEXT = `"Refer and earn up to this" 
-"Refer and earn up to that" 
-You and I both know all the ifs and buts that come with 'up to' offers. And for some reason, you always sniff that there's something wrong.  
-Same story when you move homes. 
-There are none when you do it with Flent. Because experience has always been at the center of what Flent does, and I'm carrying that same energy into the world of our referral program.  
-YOLO by Flent is that corner of the internet where referral rewards feel less transactional, more experiential (hint: rewards that don't fit in a cart)   
-If I design the way you should live with intention, so should the way I thank you for referring to it.  
-- (not so genZ) marketer, Flent    
-Also, yes, some slang dies and should stay dead – this one included. But I couldn't find a better word for that split-second energy of the "f-it, let's do it" moment – the one I want you to have too.`;
+const PARAGRAPHS = [
+  { html: `"Refer and earn up to this"<br>"Refer and earn up to that"` },
+  { html: `You and I both know all the ifs and buts that come with 'up to' offers. And for some reason, you always sniff that there's something wrong.` },
+  { html: `Same story when you move homes.` },
+  { html: `There are none when you do it with Flent. Because <em>experience</em> has always been at the center of what Flent does, and I'm carrying that same energy into the world of our referral program.` },
+  { html: `<strong>YOLO by Flent</strong> is that corner of the internet where referral rewards feel less transactional, more experiential (hint: rewards that don't fit in a cart)` },
+  { html: `If I design the way you should live with intention, so should the way I thank you for referring to it.` },
+  { html: `- (not so genZ) marketer, Flent` },
+  { html: `Also, yes, some slang dies and should stay dead – this one included. But I couldn't find a better word for that split-second energy of the "f-it, let's do it" moment – the one I want you to have too.` },
+];
 
 const StoryStepper = () => {
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -95,17 +95,14 @@ const StoryStepper = () => {
 
           {/* viewport */}
           <div className="max-h-[66vh] overflow-visible pr-4">
-            <div 
-              ref={textRef}
-              className="text-[clamp(20px,2.2vw,34px)] text-dark-text"
-              style={{ 
-                lineHeight: '1.6',
-                fontWeight: 400,
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'keep-all'
-              }}
-            >
-              {COPY_TEXT}
+            <div ref={textRef}>
+              {PARAGRAPHS.map((p, idx) => (
+                <div
+                  key={idx}
+                  className="relative mb-6 text-[clamp(20px,2vw,30px)] leading-[1.5] text-dark-text"
+                  dangerouslySetInnerHTML={{ __html: p.html }}
+                />
+              ))}
             </div>
           </div>
         </div>
