@@ -1,51 +1,50 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 
-/* Inline parachute with proper ref forwarding - based on reference design */
+/* Inline parachute matching reference SVG design */
 const ParachuteIcon = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => {
   return (
-    <svg ref={ref} viewBox="0 0 120 160" aria-hidden="true" {...props}>
-      {/* White parachute canopy with panels */}
-      <path d="M10 50 Q 60 10, 110 50 Q 100 75, 60 85 Q 20 75, 10 50 Z" fill="#FFFFFF" stroke="#E0E0E0" strokeWidth="1"/>
+    <svg ref={ref} viewBox="0 0 120 180" aria-hidden="true" {...props}>
+      {/* Main parachute canopy - dome shape like reference */}
+      <path 
+        d="M 20 60 Q 10 40, 20 30 Q 35 15, 60 10 Q 85 15, 100 30 Q 110 40, 100 60 Q 90 75, 60 85 Q 30 75, 20 60 Z" 
+        fill="#FFFFFF" 
+        stroke="#D0D0D0" 
+        strokeWidth="1"
+      />
       
-      {/* Canopy panel lines for detail */}
-      <path d="M 30 45 Q 40 20, 60 15" fill="none" stroke="#E0E0E0" strokeWidth="1"/>
-      <path d="M 90 45 Q 80 20, 60 15" fill="none" stroke="#E0E0E0" strokeWidth="1"/>
-      <path d="M 60 15 L 60 75" stroke="#E0E0E0" strokeWidth="1"/>
+      {/* Canopy panel divisions for realism */}
+      <path d="M 35 25 Q 45 15, 60 10 L 60 85" stroke="#E0E0E0" strokeWidth="0.8" fill="none"/>
+      <path d="M 85 25 Q 75 15, 60 10" stroke="#E0E0E0" strokeWidth="0.8" fill="none"/>
+      <path d="M 25 50 Q 40 30, 60 25" stroke="#E0E0E0" strokeWidth="0.8" fill="none"/>
+      <path d="M 95 50 Q 80 30, 60 25" stroke="#E0E0E0" strokeWidth="0.8" fill="none"/>
       
-      {/* FLENT text - bold and highly visible on canopy */}
+      {/* FLENT text on canopy */}
       <text 
         x="60" 
-        y="50" 
+        y="52" 
         textAnchor="middle" 
-        fontSize="16" 
+        fontSize="14" 
         fontWeight="900"
         fill="#0A0A0A"
-        style={{fontFamily:"Plus Jakarta Sans,system-ui",letterSpacing:"1.5px"}}
+        style={{fontFamily:"Plus Jakarta Sans,system-ui",letterSpacing:"1.2px"}}
       >
         FLENT
       </text>
       
-      {/* Parachute suspension lines */}
-      <line x1="20" y1="65" x2="55" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
-      <line x1="40" y1="75" x2="58" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
-      <line x1="60" y1="80" x2="60" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
-      <line x1="80" y1="75" x2="62" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
-      <line x1="100" y1="65" x2="65" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      {/* Suspension lines connecting canopy to person */}
+      <line x1="25" y1="70" x2="55" y2="115" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.85"/>
+      <line x1="40" y1="78" x2="57" y2="115" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.85"/>
+      <line x1="60" y1="82" x2="60" y2="115" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.85"/>
+      <line x1="80" y1="78" x2="63" y2="115" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.85"/>
+      <line x1="95" y1="70" x2="65" y2="115" stroke="#FFFFFF" strokeWidth="1.2" opacity="0.85"/>
       
       {/* Stick figure person */}
-      {/* Head */}
-      <circle cx="60" cy="105" r="5" fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="1"/>
-      
-      {/* Body */}
-      <line x1="60" y1="110" x2="60" y2="130" stroke="#FFFFFF" strokeWidth="2.5"/>
-      
-      {/* Arms */}
-      <line x1="60" y1="115" x2="50" y2="110" stroke="#FFFFFF" strokeWidth="2.5"/>
-      <line x1="60" y1="115" x2="70" y2="110" stroke="#FFFFFF" strokeWidth="2.5"/>
-      
-      {/* Legs - these will land inline with "Flent" */}
-      <line x1="60" y1="130" x2="52" y2="150" stroke="#FFFFFF" strokeWidth="2.5"/>
-      <line x1="60" y1="130" x2="68" y2="150" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <circle cx="60" cy="125" r="6" fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="1.5"/>
+      <line x1="60" y1="131" x2="60" y2="150" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="138" x2="48" y2="133" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="138" x2="72" y2="133" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="150" x2="50" y2="170" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="150" x2="70" y2="170" stroke="#FFFFFF" strokeWidth="2.5"/>
     </svg>
   );
 });
@@ -137,17 +136,17 @@ export const Hero = () => {
               transform: "translateY(-0.05em)"
             }}
           />
-          {/* parachute - starts from very top, feet land inline with "Flent" */}
+          {/* parachute - smaller, starts very high, feet land inline with "Flent" */}
           <ParachuteIcon
             ref={chuteRef}
             className="absolute pointer-events-none"
             style={{
               left: "100%",
               bottom: "0",
-              width: "80px",
+              width: "60px",
               color: "#FFFFFF",
               zIndex: 3,
-              transform: "translate(-50%, -120vh)",
+              transform: "translate(-50%, -150vh)",
             }}
           />
         </p>
@@ -177,20 +176,19 @@ export const Hero = () => {
 
 /* ---------- animation ---------- */
 function runParachute(chute: Element, dot: HTMLElement) {
-  // Slow, smooth parachute fall from very top of screen with gentle S-curve swaying (6 seconds)
-  // Feet land at baseline of text
+  // Slow, smooth parachute fall from very high with gentle S-curve swaying (6 seconds)
   const fall = chute.animate(
     [
-      { transform: "translate(-50%, -120vh) rotate(0deg)", offset: 0 },
-      { transform: "translate(-45%, -100vh) rotate(5deg)", offset: 0.08 },
-      { transform: "translate(-40%, -80vh) rotate(8deg)", offset: 0.16 },
-      { transform: "translate(-35%, -60vh) rotate(10deg)", offset: 0.25 },
-      { transform: "translate(-38%, -45vh) rotate(7deg)", offset: 0.35 },
-      { transform: "translate(-48%, -32vh) rotate(0deg)", offset: 0.45 },
-      { transform: "translate(-58%, -22vh) rotate(-7deg)", offset: 0.58 },
-      { transform: "translate(-65%, -14vh) rotate(-10deg)", offset: 0.70 },
-      { transform: "translate(-62%, -7vh) rotate(-7deg)", offset: 0.82 },
-      { transform: "translate(-55%, -2vh) rotate(-2deg)", offset: 0.92 },
+      { transform: "translate(-50%, -150vh) rotate(0deg)", offset: 0 },
+      { transform: "translate(-45%, -125vh) rotate(5deg)", offset: 0.08 },
+      { transform: "translate(-40%, -100vh) rotate(8deg)", offset: 0.16 },
+      { transform: "translate(-35%, -75vh) rotate(10deg)", offset: 0.25 },
+      { transform: "translate(-38%, -55vh) rotate(7deg)", offset: 0.35 },
+      { transform: "translate(-48%, -40vh) rotate(0deg)", offset: 0.45 },
+      { transform: "translate(-58%, -28vh) rotate(-7deg)", offset: 0.58 },
+      { transform: "translate(-65%, -18vh) rotate(-10deg)", offset: 0.70 },
+      { transform: "translate(-62%, -10vh) rotate(-7deg)", offset: 0.82 },
+      { transform: "translate(-55%, -3vh) rotate(-2deg)", offset: 0.92 },
       { transform: "translate(-50%, 0) rotate(0deg)", offset: 1 }
     ],
     { duration: 6000, easing: "cubic-bezier(0.25, 0.1, 0.25, 1)", fill: "forwards" }
@@ -213,27 +211,35 @@ function runParachute(chute: Element, dot: HTMLElement) {
 }
 
 function morphToPeriod(chuteEl: HTMLElement, dotEl: HTMLElement) {
-  // hide chute
-  chuteEl.animate([{ opacity: 1 }, { opacity: 0 }], {
-    duration: 140,
-    fill: "forwards",
-    easing: "ease-out",
-  });
+  // Smooth multi-stage morph: shrink parachute while fading, then grow dot
+  
+  // Stage 1: Shrink and fade parachute
+  chuteEl.animate(
+    [
+      { opacity: 1, transform: "translate(-50%, 0) scale(1)" },
+      { opacity: 0.6, transform: "translate(-50%, 0) scale(0.5)" },
+      { opacity: 0, transform: "translate(-50%, 0) scale(0.1)" }
+    ],
+    { duration: 400, fill: "forwards", easing: "ease-in-out" }
+  );
 
-  // show dot (white), then recolor to coral
-  dotEl
-    .animate(
-      [
-        { opacity: 0, transform: "scale(0.4)", color: "#FFFFFF" },
-        { opacity: 1, transform: "scale(1.0)", color: "#FFFFFF" }
-      ],
-      { duration: 140, fill: "forwards", easing: "ease-out" }
-    )
-    .finished.then(() => {
-      dotEl.animate([{ color: "#FFFFFF" }, { color: "#FF6A3D" }], {
-        duration: 140,
-        fill: "forwards",
-        easing: "ease-out",
+  // Stage 2: After slight delay, grow dot from small to full size (white first)
+  setTimeout(() => {
+    dotEl
+      .animate(
+        [
+          { opacity: 0, transform: "scale(0.2)", color: "#FFFFFF" },
+          { opacity: 0.8, transform: "scale(0.8)", color: "#FFFFFF" },
+          { opacity: 1, transform: "scale(1.0)", color: "#FFFFFF" }
+        ],
+        { duration: 350, fill: "forwards", easing: "ease-out" }
+      )
+      .finished.then(() => {
+        // Stage 3: Smooth color transition to coral
+        dotEl.animate(
+          [{ color: "#FFFFFF" }, { color: "#FF6A3D" }],
+          { duration: 300, fill: "forwards", easing: "ease-in-out" }
+        );
       });
-    });
+  }, 200);
 }
