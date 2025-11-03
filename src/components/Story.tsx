@@ -91,7 +91,7 @@ const StoryStepper = () => {
                   key={idx}
                   className="relative mb-6 text-dark-text"
                   style={{
-                    fontSize: 'clamp(22px, 3.2vw, 44px)',
+                    fontSize: 'clamp(26px, 3.6vw, 50px)',
                     lineHeight: '1.45',
                     letterSpacing: '0.005em'
                   }}
@@ -129,7 +129,7 @@ export const Story = () => {
       <div className="sticky top-0 h-screen flex items-center">
         <motion.div 
           style={{ scale: contentScale }}
-          className="container mx-auto px-6 grid md:grid-cols-5 gap-12 items-center"
+          className="container mx-auto px-6 grid md:grid-cols-7 gap-12 items-center"
         >
           {/* Left: Title (static) */}
           <motion.div
@@ -143,7 +143,7 @@ export const Story = () => {
           </motion.div>
 
           {/* Right: Teleprompter */}
-          <div className="md:col-span-3 relative">
+          <div className="md:col-span-5 relative">
             {/* L1: Vertical hairline */}
             <motion.div
               data-depth="0.15"
