@@ -111,13 +111,13 @@ const StoryStepper = () => {
     };
   }, [currentLine, charIndex, allDone]);
 
-  /** Calculate vertical offset to keep current line in view (scroll down effect) */
+  /** Calculate vertical offset - keep content centered as we scroll */
   const offset = useMemo(() => {
-    // Keep first few lines at top, then start "scrolling down"
-    const scrollStart = 3; // Start scrolling after 3 lines
-    const scrollAmount = Math.max(0, filledLines.size - scrollStart);
-    return `translateY(calc(${scrollAmount * -1} * 3.2rem))`;
-  }, [filledLines]);
+    // Start moving content up after line 2 to maintain centered view
+    if (currentLine <= 2) return 'translateY(0)';
+    const moveAmount = currentLine - 2;
+    return `translateY(calc(${moveAmount * -1} * 3.2rem))`;
+  }, [currentLine]);
 
   return (
     <div className="relative">
@@ -126,21 +126,21 @@ const StoryStepper = () => {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
 
       {/* viewport */}
-      <div ref={viewportRef} className="max-h-[66vh] overflow-hidden pr-4">
+      <div ref={viewportRef} className="relative max-h-[66vh] overflow-hidden pr-4 flex items-start pt-12">
         {/* stack of lines */}
         <div
-          className="transition-transform duration-500 ease-out will-change-transform"
+          className="w-full transition-transform duration-700 ease-out will-change-transform"
           style={{ transform: offset }}
         >
           {LINES.map((text, idx) => {
             const isBlank = text.trim() === "";
             const isFilled = filledLines.has(idx);
             const isCurrent = idx === currentLine;
-            // Show lines within viewport range
-            const isVisible = idx >= Math.max(0, currentLine - 5) && idx <= currentLine + 3;
+            const isVisible = idx <= currentLine + 2;
             
-            // Calculate visible text for current line
-            const visibleText = isCurrent && !isBlank 
+            // Show solid text for filled and current lines only
+            const showSolid = isFilled || isCurrent;
+            const visibleText = isCurrent 
               ? text.slice(0, charIndex) 
               : isFilled ? text : "";
 
@@ -148,26 +148,30 @@ const StoryStepper = () => {
               <div
                 key={idx}
                 data-line={idx}
-                className="relative h-[3.2rem] flex items-center transition-all duration-300"
+                className="h-[3.2rem] flex items-center mb-2"
                 style={{
                   opacity: isVisible ? 1 : 0,
-                  visibility: isVisible ? "visible" : "hidden",
                 }}
               >
-                {/* ghost layer (always full text, very faint) */}
-                <span className="line-ghost text-[clamp(20px,2.2vw,34px)] leading-none">
-                  {isBlank ? " " : text}
-                </span>
-
-                {/* solid layer (revealed character by character) */}
-                {!isBlank && visibleText && (
-                  <span
-                    className="line-solid absolute left-0 top-0 text-[clamp(20px,2.2vw,34px)] leading-none"
-                    aria-hidden="true"
-                  >
-                    {visibleText}
-                  </span>
+                {/* Only show one layer at a time to avoid double text */}
+                {showSolid ? (
+                  /* Solid filled/filling text */
+                  !isBlank && visibleText && (
+                    <span className="line-solid text-[clamp(20px,2.2vw,34px)] leading-none">
+                      {visibleText}
+                    </span>
+                  )
+                ) : (
+                  /* Ghost preview for unfilled lines */
+                  !isBlank && (
+                    <span className="line-ghost text-[clamp(20px,2.2vw,34px)] leading-none">
+                      {text}
+                    </span>
+                  )
                 )}
+                
+                {/* Blank lines */}
+                {isBlank && <span className="opacity-0">.</span>}
               </div>
             );
           })}
