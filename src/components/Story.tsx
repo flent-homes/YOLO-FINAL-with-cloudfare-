@@ -11,6 +11,7 @@ const StoryStepper = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const storyRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!textRef.current || !wrapperRef.current || !containerRef.current) return;
@@ -39,7 +40,7 @@ const StoryStepper = () => {
     // Create smooth scroll-triggered animation
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
-      start: "top center",
+      start: "top top",
       end: "+=4000",
       scrub: 0.5,
       pin: false,
@@ -72,6 +73,34 @@ const StoryStepper = () => {
     return () => {
       scrollTrigger.kill();
       splitText.revert();
+    };
+  }, []);
+
+  // Scoped scroll lock - only applies to Story surface when fully visible
+  useEffect(() => {
+    const storyEl = document.querySelector("#story");
+    if (!storyEl) return;
+
+    const handleScroll = (e: WheelEvent | TouchEvent) => {
+      const path = (e as any).composedPath?.() ?? [];
+      const isInsideStory = path.includes(storyEl);
+      
+      const rect = storyEl.getBoundingClientRect();
+      const storyFullyVisible = rect.top <= 0 && rect.bottom >= window.innerHeight;
+
+      // Only lock if story is fully in view and scroll originates inside it
+      if (isInsideStory && storyFullyVisible) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    window.addEventListener("wheel", handleScroll as EventListener, { passive: false });
+    window.addEventListener("touchmove", handleScroll as EventListener, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll as EventListener);
+      window.removeEventListener("touchmove", handleScroll as EventListener);
     };
   }, []);
 
