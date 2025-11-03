@@ -84,8 +84,8 @@ const StoryStepper = () => {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
 
           {/* viewport */}
-          <div className="max-h-[66vh] overflow-visible pr-4 flex items-center">
-            <div ref={textRef}>
+          <div className="max-h-[70vh] overflow-visible pr-4 flex items-center">
+            <div ref={textRef} className="pb-12">
               {PARAGRAPHS.map((p, idx) => (
                 <div
                   key={idx}
