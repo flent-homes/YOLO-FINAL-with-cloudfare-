@@ -48,7 +48,7 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalWords);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
-        // Move text up enough to show the last line completely
+        // Move text up - starts at 0, moves up to show all content
         const translateY = -(progress * 140);
         gsap.set(wrapperRef.current, { y: `${translateY}%`, force3D: true });
         
@@ -88,7 +88,7 @@ const StoryStepper = () => {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
 
           {/* viewport */}
-          <div className="max-h-[66vh] overflow-visible pr-4">
+          <div className="max-h-[66vh] overflow-visible pr-4 flex items-start">
             <div ref={textRef}>
               {PARAGRAPHS.map((p, idx) => (
                 <div
