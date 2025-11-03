@@ -91,7 +91,7 @@ const StoryStepper = () => {
                   key={idx}
                   className="relative mb-6 text-dark-text"
                   style={{
-                    fontSize: 'clamp(18px, 2.4vw, 32px)',
+                    fontSize: 'clamp(16px, 2vw, 28px)',
                     lineHeight: '1.5',
                     letterSpacing: '0.005em',
                     wordBreak: 'keep-all',
