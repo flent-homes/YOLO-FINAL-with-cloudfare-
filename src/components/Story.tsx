@@ -30,123 +30,85 @@ const LINES = [
 const StoryStepper = () => {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [currentLine, setCurrentLine] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
   const [filledLines, setFilledLines] = useState<Set<number>>(new Set());
   const [isAnimating, setIsAnimating] = useState(false);
 
   const lastIdx = LINES.length - 1;
-  const allDone = filledLines.size === LINES.length;
+  const allDone = currentLine >= LINES.length;
+
+  /** Character-by-character fill animation */
+  useEffect(() => {
+    if (currentLine >= LINES.length) return;
+    if (isAnimating) return;
+
+    const line = LINES[currentLine];
+    
+    // Handle empty lines instantly
+    if (line.trim() === "") {
+      setFilledLines(prev => new Set([...prev, currentLine]));
+      setCurrentLine(prev => prev + 1);
+      setCharIndex(0);
+      return;
+    }
+
+    // Animate character by character
+    if (charIndex < line.length) {
+      const timer = setTimeout(() => {
+        setCharIndex(prev => prev + 1);
+      }, 30); // Adjust speed here (lower = faster)
+      return () => clearTimeout(timer);
+    } else {
+      // Line complete, move to next
+      setFilledLines(prev => new Set([...prev, currentLine]));
+      setTimeout(() => {
+        setCurrentLine(prev => prev + 1);
+        setCharIndex(0);
+      }, 200); // Pause before next line
+    }
+  }, [currentLine, charIndex, isAnimating]);
 
   /** Intercept scroll/keys/touch */
   useEffect(() => {
     const vp = viewportRef.current;
     if (!vp) return;
 
-    const handleNext = () => {
-      if (isAnimating) return;
-      if (currentLine >= LINES.length) return;
-      
-      setIsAnimating(true);
-      const line = LINES[currentLine];
-      
-      if (line.trim() === "") {
-        // Blank lines fill instantly
-        setFilledLines(prev => new Set([...prev, currentLine]));
-        setCurrentLine(prev => Math.min(LINES.length, prev + 1));
-        setTimeout(() => setIsAnimating(false), 100);
-      } else {
-        // Fill the line with animation
-        const row = document.querySelector(`[data-line="${currentLine}"]`) as HTMLElement;
-        if (row) {
-          const solid = row.querySelector(".line-solid") as HTMLElement;
-          if (solid) {
-            solid.style.transition = "clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
-            solid.style.clipPath = "inset(0 0% 0 0)";
-            
-            setTimeout(() => {
-              setFilledLines(prev => new Set([...prev, currentLine]));
-              setCurrentLine(prev => Math.min(LINES.length, prev + 1));
-              setIsAnimating(false);
-            }, 400);
-          }
-        }
+    const handleScroll = (e: Event) => {
+      if (!allDone) {
+        e.preventDefault();
+        e.stopPropagation();
       }
-    };
-
-    const handlePrev = () => {
-      if (isAnimating || currentLine === 0) return;
-      
-      const prevLine = currentLine - 1;
-      setIsAnimating(true);
-      
-      const row = document.querySelector(`[data-line="${prevLine}"]`) as HTMLElement;
-      if (row) {
-        const solid = row.querySelector(".line-solid") as HTMLElement;
-        if (solid) {
-          solid.style.transition = "clip-path 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-          solid.style.clipPath = "inset(0 100% 0 0)";
-        }
-      }
-      
-      setTimeout(() => {
-        setFilledLines(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(prevLine);
-          return newSet;
-        });
-        setCurrentLine(prevLine);
-        setIsAnimating(false);
-      }, 300);
     };
 
     const onWheel = (e: WheelEvent) => {
-      const down = e.deltaY > 0;
-      if (!allDone || (!down && currentLine > 0)) {
+      if (!allDone) {
         e.preventDefault();
         e.stopPropagation();
-        down ? handleNext() : handlePrev();
       }
     };
 
-    let touchStartY = 0;
-    const onTouchStart = (e: TouchEvent) => (touchStartY = e.touches[0].clientY);
-    const onTouchMove = (e: TouchEvent) => {
-      const dy = touchStartY - e.touches[0].clientY;
-      if (Math.abs(dy) < 4) return;
-      const down = dy > 0;
-      if (!allDone || (!down && currentLine > 0)) {
+    const onTouchStart = (e: TouchEvent) => {
+      if (!allDone) {
         e.preventDefault();
-        e.stopPropagation();
-        down ? handleNext() : handlePrev();
       }
-      touchStartY = e.touches[0].clientY;
     };
 
     const onKey = (e: KeyboardEvent) => {
-      if (["ArrowDown", "PageDown", " "].includes(e.key)) {
-        if (!allDone) {
-          e.preventDefault();
-          handleNext();
-        }
-      } else if (["ArrowUp", "PageUp"].includes(e.key)) {
-        if (currentLine > 0) {
-          e.preventDefault();
-          handlePrev();
-        }
+      if (!allDone && ["ArrowDown", "PageDown", " ", "ArrowUp", "PageUp"].includes(e.key)) {
+        e.preventDefault();
       }
     };
 
     vp.addEventListener("wheel", onWheel, { passive: false });
-    vp.addEventListener("touchstart", onTouchStart, { passive: true });
-    vp.addEventListener("touchmove", onTouchMove, { passive: false });
+    vp.addEventListener("touchstart", onTouchStart, { passive: false });
     window.addEventListener("keydown", onKey);
 
     return () => {
       vp.removeEventListener("wheel", onWheel as any);
       vp.removeEventListener("touchstart", onTouchStart as any);
-      vp.removeEventListener("touchmove", onTouchMove as any);
       window.removeEventListener("keydown", onKey);
     };
-  }, [currentLine, isAnimating, allDone]);
+  }, [allDone]);
 
   /** Calculate vertical offset based on filled lines */
   const offset = useMemo(() => {
@@ -169,7 +131,13 @@ const StoryStepper = () => {
           {LINES.map((text, idx) => {
             const isBlank = text.trim() === "";
             const isFilled = filledLines.has(idx);
-            const isVisible = idx <= currentLine + 2;
+            const isCurrent = idx === currentLine;
+            const isVisible = idx <= currentLine;
+            
+            // Calculate visible text for current line
+            const visibleText = isCurrent && !isBlank 
+              ? text.slice(0, charIndex) 
+              : isFilled ? text : "";
 
             return (
               <div
@@ -178,24 +146,21 @@ const StoryStepper = () => {
                 className="relative h-[3.2rem] flex items-center transition-all duration-300"
                 style={{
                   opacity: isVisible ? 1 : 0,
-                  transform: isFilled ? "translateY(0)" : "translateY(2px)",
+                  visibility: isVisible ? "visible" : "hidden",
                 }}
               >
-                {/* ghost layer */}
+                {/* ghost layer (always full text, very faint) */}
                 <span className="line-ghost text-[clamp(20px,2.2vw,34px)] leading-none">
                   {isBlank ? " " : text}
                 </span>
 
-                {/* solid layer (revealed sequentially) */}
-                {!isBlank && (
+                {/* solid layer (revealed character by character) */}
+                {!isBlank && visibleText && (
                   <span
-                    className="line-solid absolute inset-0 text-[clamp(20px,2.2vw,34px)] leading-none"
-                    style={{
-                      clipPath: isFilled ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
-                    }}
+                    className="line-solid absolute left-0 top-0 text-[clamp(20px,2.2vw,34px)] leading-none"
                     aria-hidden="true"
                   >
-                    {text}
+                    {visibleText}
                   </span>
                 )}
               </div>

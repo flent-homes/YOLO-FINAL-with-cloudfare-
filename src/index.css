@@ -148,19 +148,17 @@ All colors MUST be HSL.
     transition: opacity 0.8s ease-out;
   }
 
-  /* Story line layers - smooth sequential reveal */
+  /* Story line layers - character-by-character reveal */
   .line-ghost {
-    color: rgba(10, 10, 10, 0.18);
-    -webkit-text-stroke: 0.5px rgba(10, 10, 10, 0.25);
-    text-stroke: 0.5px rgba(10, 10, 10, 0.25);
+    color: rgba(10, 10, 10, 0.12);
+    -webkit-text-stroke: 0.5px rgba(10, 10, 10, 0.18);
+    text-stroke: 0.5px rgba(10, 10, 10, 0.18);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   .line-solid {
-    color: #0A0A0A;
-    clip-path: inset(0 100% 0 0);
-    will-change: clip-path;
+    color: #0a0a0a;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
