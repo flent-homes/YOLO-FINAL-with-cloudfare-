@@ -36,10 +36,10 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    // Create smooth scroll-triggered animation - starts when section reaches top
+    // Create smooth scroll-triggered animation - starts when section is fully visible
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
-      start: "top top",
+      start: "top bottom", // Starts when top of section reaches bottom of viewport (fully visible)
       end: "+=4000",
       scrub: 0.5,
       pin: false,
