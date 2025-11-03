@@ -32,15 +32,12 @@ const StoryStepper = () => {
   const [currentLine, setCurrentLine] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [filledLines, setFilledLines] = useState<Set<number>>(new Set());
-  const [isAnimating, setIsAnimating] = useState(false);
 
-  const lastIdx = LINES.length - 1;
   const allDone = currentLine >= LINES.length;
 
-  /** Character-by-character fill animation */
-  useEffect(() => {
+  /** Handle scroll to reveal more characters */
+  const handleNext = () => {
     if (currentLine >= LINES.length) return;
-    if (isAnimating) return;
 
     const line = LINES[currentLine];
     
@@ -52,63 +49,67 @@ const StoryStepper = () => {
       return;
     }
 
-    // Animate character by character
+    // Reveal more characters (5 per scroll)
+    const charsPerScroll = 5;
     if (charIndex < line.length) {
-      const timer = setTimeout(() => {
-        setCharIndex(prev => prev + 1);
-      }, 30); // Adjust speed here (lower = faster)
-      return () => clearTimeout(timer);
+      setCharIndex(prev => Math.min(line.length, prev + charsPerScroll));
     } else {
       // Line complete, move to next
       setFilledLines(prev => new Set([...prev, currentLine]));
-      setTimeout(() => {
-        setCurrentLine(prev => prev + 1);
-        setCharIndex(0);
-      }, 200); // Pause before next line
+      setCurrentLine(prev => prev + 1);
+      setCharIndex(0);
     }
-  }, [currentLine, charIndex, isAnimating]);
+  };
 
-  /** Intercept scroll/keys/touch */
+  /** Intercept scroll/keys/touch to control animation */
   useEffect(() => {
     const vp = viewportRef.current;
     if (!vp) return;
 
-    const handleScroll = (e: Event) => {
-      if (!allDone) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
     const onWheel = (e: WheelEvent) => {
-      if (!allDone) {
-        e.preventDefault();
-        e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
+      if (!allDone && e.deltaY > 0) {
+        handleNext();
       }
     };
 
+    let touchStartY = 0;
     const onTouchStart = (e: TouchEvent) => {
-      if (!allDone) {
+      touchStartY = e.touches[0].clientY;
+    };
+    
+    const onTouchMove = (e: TouchEvent) => {
+      const dy = touchStartY - e.touches[0].clientY;
+      if (Math.abs(dy) > 10 && !allDone && dy > 0) {
         e.preventDefault();
+        e.stopPropagation();
+        handleNext();
+        touchStartY = e.touches[0].clientY;
       }
     };
 
     const onKey = (e: KeyboardEvent) => {
-      if (!allDone && ["ArrowDown", "PageDown", " ", "ArrowUp", "PageUp"].includes(e.key)) {
-        e.preventDefault();
+      if (["ArrowDown", "PageDown", " "].includes(e.key)) {
+        if (!allDone) {
+          e.preventDefault();
+          handleNext();
+        }
       }
     };
 
     vp.addEventListener("wheel", onWheel, { passive: false });
-    vp.addEventListener("touchstart", onTouchStart, { passive: false });
+    vp.addEventListener("touchstart", onTouchStart, { passive: true });
+    vp.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("keydown", onKey);
 
     return () => {
       vp.removeEventListener("wheel", onWheel as any);
       vp.removeEventListener("touchstart", onTouchStart as any);
+      vp.removeEventListener("touchmove", onTouchMove as any);
       window.removeEventListener("keydown", onKey);
     };
-  }, [allDone]);
+  }, [currentLine, charIndex, allDone]);
 
   /** Calculate vertical offset to keep current line in view (scroll down effect) */
   const offset = useMemo(() => {
