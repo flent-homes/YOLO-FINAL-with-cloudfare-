@@ -48,9 +48,9 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalChars);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalChars);
         
-        // Move text up smoothly
-        const translateY = -(progress * 30);
-        gsap.set(wrapperRef.current, { y: translateY });
+        // Move text up smoothly - increased distance for more visible effect
+        const translateY = -(progress * 150);
+        gsap.set(wrapperRef.current, { y: `${translateY}%` });
         
         // Show next chunk as ghost
         chars.slice(0, nextChunkEnd).forEach(char => {
