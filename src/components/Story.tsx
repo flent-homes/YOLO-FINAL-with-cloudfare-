@@ -36,7 +36,7 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    // Create smooth scroll-triggered animation - starts only when fully visible
+    // Create smooth scroll-triggered animation
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
@@ -44,14 +44,12 @@ const StoryStepper = () => {
       scrub: 0.5,
       pin: false,
       onUpdate: (self) => {
-        // Only animate after section is fully visible (first 5% of scroll is buffer)
-        const adjustedProgress = Math.max(0, (self.progress - 0.05) / 0.95);
-        const progress = adjustedProgress;
+        const progress = self.progress;
         const revealedCount = Math.floor(progress * totalWords);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
-        // Move text up - offset to start with first line slightly below center
-        const translateY = 30 - (progress * 170);
+        // Move text up to show all content including last line
+        const translateY = -(progress * 140);
         gsap.set(wrapperRef.current, { y: `${translateY}%`, force3D: true });
         
         // Show next chunk as ghost
@@ -59,18 +57,14 @@ const StoryStepper = () => {
           gsap.set(word, { visibility: "visible" });
         });
         
-        // Ghost for upcoming words FIRST
+        // Ghost for upcoming words
         words.slice(revealedCount, nextChunkEnd).forEach(word => {
-          gsap.set(word, { opacity: 0.15, color: '' });
+          gsap.set(word, { opacity: 0.15 });
         });
         
-        // Fill revealed words LAST - with full opacity and color
+        // Fill revealed words
         words.slice(0, revealedCount).forEach(word => {
-          gsap.set(word, { 
-            opacity: 1,
-            visibility: "visible",
-            color: ''
-          });
+          gsap.set(word, { opacity: 1, visibility: "visible" });
         });
       }
     });
@@ -90,8 +84,8 @@ const StoryStepper = () => {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
 
           {/* viewport */}
-          <div className="max-h-[66vh] overflow-visible pr-4 pt-12">
-            <div ref={textRef} className="pt-0">
+          <div className="max-h-[66vh] overflow-visible pr-4">
+            <div ref={textRef}>
               {PARAGRAPHS.map((p, idx) => (
                 <div
                   key={idx}
