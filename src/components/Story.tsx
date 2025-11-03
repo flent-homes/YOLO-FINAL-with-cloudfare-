@@ -43,9 +43,7 @@ const StoryStepper = () => {
       const revealedCount = Math.floor(progress * totalWords);
       const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
       
-      // Move text up smoothly
-      const translateY = -(progress * 150);
-      gsap.set(wrapperRef.current, { y: `${translateY}%` });
+      // Don't actually move text - just reveal it in place for the effect
       
       // Show next chunk as ghost
       words.slice(0, nextChunkEnd).forEach(word => {
@@ -69,30 +67,24 @@ const StoryStepper = () => {
       if (!container) return;
 
       const rect = container.getBoundingClientRect();
-      const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
+      const isInView = rect.top <= 10 && rect.bottom >= window.innerHeight;
 
-      if (isInView && !isScrolling.current) {
-        e.preventDefault();
-        e.stopPropagation();
+      if (isInView) {
+        const currentProgress = scrollProgress;
         
-        // Slower scroll increment - fills 30% per several scrolls
-        const delta = e.deltaY > 0 ? 0.008 : -0.008;
-        setScrollProgress(prev => {
-          const newProgress = Math.max(0, Math.min(1, prev + delta));
-          updateAnimation(newProgress);
+        // Only intercept if we're not done yet
+        if (currentProgress < 0.999) {
+          e.preventDefault();
+          e.stopPropagation();
           
-          // Release scroll only when completely done
-          if (newProgress >= 0.999 && delta > 0) {
-            isScrolling.current = true;
-            window.scrollBy({ top: 100, behavior: 'smooth' });
-            setTimeout(() => {
-              isScrolling.current = false;
-            }, 300);
-            return 1;
-          }
-          
-          return newProgress;
-        });
+          // Slower scroll increment - fills 30% per several scrolls
+          const delta = e.deltaY > 0 ? 0.01 : -0.01;
+          setScrollProgress(prev => {
+            const newProgress = Math.max(0, Math.min(1, prev + delta));
+            updateAnimation(newProgress);
+            return newProgress;
+          });
+        }
       }
     };
 
@@ -102,7 +94,7 @@ const StoryStepper = () => {
       window.removeEventListener("wheel", handleWheel as EventListener);
       splitText.revert();
     };
-  }, []);
+  }, [scrollProgress]);
 
   return (
     <div ref={containerRef} className="relative min-h-[250vh]">
