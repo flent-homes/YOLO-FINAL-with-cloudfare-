@@ -48,8 +48,8 @@ const StoryStepper = () => {
         const revealedCount = Math.floor(progress * totalWords);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalWords);
         
-        // Move text up - starts at 0, moves up to show all content
-        const translateY = -(progress * 140);
+        // Move text up - offset to start with first line visible
+        const translateY = 20 - (progress * 160);
         gsap.set(wrapperRef.current, { y: `${translateY}%`, force3D: true });
         
         // Show next chunk as ghost
@@ -88,7 +88,7 @@ const StoryStepper = () => {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[18vh] bg-gradient-to-t from-light-bg to-transparent z-10" />
 
           {/* viewport */}
-          <div className="max-h-[66vh] overflow-visible pr-4 flex items-center justify-center">
+          <div className="max-h-[66vh] overflow-visible pr-4">
             <div ref={textRef} className="pt-0">
               {PARAGRAPHS.map((p, idx) => (
                 <div
