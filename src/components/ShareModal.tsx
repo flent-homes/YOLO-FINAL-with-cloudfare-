@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface ShareModalProps {
 }
 
 export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps) => {
+  const { toast } = useToast();
   const url = "https://www.flent.in/?utm_source=YOLO%20Site&utm_medium=website&utm_campaign=YOLO";
   
   const messages = {
@@ -19,25 +21,57 @@ export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps
     generic: `Check out Flent Homes, it's a rental housing platform that offers fully furnished ready-to-move-in homes in Bangalore:\n${url}\nAlso, if you end up booking, just write my name (${fullName}) and number (${phone}) in their onboarding form.`,
   };
 
+  const copyGenericLink = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({
+        description: "Link copied to clipboard!",
+      });
+    } catch {
+      toast({
+        description: "Could not copy. Please copy manually.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const copyInstagramMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(messages.instagram);
+      toast({
+        description: "Message copied! You can paste it in Instagram DM.",
+      });
+    } catch {
+      toast({
+        description: "Could not copy. Please copy manually.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const shareToWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(messages.whatsapp)}`, "_blank");
   };
 
   const shareToMessenger = () => {
-    window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(url)}&app_id=YOUR_APP_ID&redirect_uri=${encodeURIComponent(window.location.href)}`, "_blank");
+    // Using Web Share API fallback for Messenger since Facebook requires app_id
+    if (navigator.share) {
+      navigator.share({
+        title: "YOLO by Flent",
+        text: messages.generic,
+        url: url,
+      }).catch(() => {
+        // Fallback to copying link
+        copyGenericLink();
+      });
+    } else {
+      // Fallback: copy link for manual sharing
+      copyGenericLink();
+    }
   };
 
   const shareToLinkedIn = () => {
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, "_blank");
-  };
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(messages.instagram);
-      alert("Message copied! You can paste it in Instagram DM.");
-    } catch {
-      alert("Could not copy. Please copy manually.");
-    }
   };
 
   return (
@@ -56,7 +90,7 @@ export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps
           </button>
           
           <button
-            onClick={copyLink}
+            onClick={copyInstagramMessage}
             className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-sans font-semibold hover:opacity-90 transition-opacity"
           >
             Copy for Instagram DM
@@ -77,7 +111,7 @@ export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps
           </button>
           
           <button
-            onClick={copyLink}
+            onClick={copyGenericLink}
             className="w-full px-6 py-3 bg-secondary text-dark-text border border-border rounded-lg font-sans font-semibold hover:bg-dark-text/5 transition-colors"
           >
             Copy Link

@@ -65,12 +65,70 @@ All colors MUST be HSL.
 }
 
 @layer base {
+  /* Plus Jakarta Sans - Regular (400) */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/PlusJakartaSans-Regular.woff2') format('woff2'),
+         url('/fonts/PlusJakartaSans-Regular.woff') format('woff'),
+         url('/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+  }
+  
+  /* Plus Jakarta Sans - Medium (500) */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/PlusJakartaSans-Medium.woff2') format('woff2'),
+         url('/fonts/PlusJakartaSans-Medium.woff') format('woff'),
+         url('/fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+  }
+  
+  /* Plus Jakarta Sans - SemiBold (600) */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/PlusJakartaSans-SemiBold.woff2') format('woff2'),
+         url('/fonts/PlusJakartaSans-SemiBold.woff') format('woff'),
+         url('/fonts/PlusJakartaSans-SemiBold.ttf') format('truetype');
+  }
+  
+  /* Plus Jakarta Sans - Bold (700) */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/PlusJakartaSans-Bold.woff2') format('woff2'),
+         url('/fonts/PlusJakartaSans-Bold.woff') format('woff'),
+         url('/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+  }
+  
+  /* Zin Display Condensed - Regular (400) */
   @font-face {
     font-family: 'Zin Display Condensed';
     font-style: normal;
-    font-weight: 400 700;
+    font-weight: 400;
     font-display: swap;
-    src: local('Zin Display Condensed Demo');
+    src: url('/fonts/ZinDisplayCondensed-Regular.woff2') format('woff2'),
+         url('/fonts/ZinDisplayCondensed-Regular.woff') format('woff'),
+         url('/fonts/ZinDisplayCondensed-Regular.ttf') format('truetype');
+  }
+  
+  /* Zin Display Condensed - Bold (700) */
+  @font-face {
+    font-family: 'Zin Display Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/ZinDisplayCondensed-Bold.woff2') format('woff2'),
+         url('/fonts/ZinDisplayCondensed-Bold.woff') format('woff'),
+         url('/fonts/ZinDisplayCondensed-Bold.ttf') format('truetype');
   }
   
   * {
