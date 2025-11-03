@@ -57,14 +57,14 @@ const StoryStepper = () => {
           gsap.set(word, { visibility: "visible" });
         });
         
-        // Fill revealed words
+        // Fill revealed words - ensure full opacity
         words.slice(0, revealedCount).forEach(word => {
-          gsap.set(word, { opacity: 1 });
+          gsap.set(word, { opacity: 1, visibility: "visible" });
         });
         
         // Ghost for upcoming words
         words.slice(revealedCount, nextChunkEnd).forEach(word => {
-          gsap.set(word, { opacity: 0.15 });
+          gsap.set(word, { opacity: 0.15, visibility: "visible" });
         });
       }
     });
