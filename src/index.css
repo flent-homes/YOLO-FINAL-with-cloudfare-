@@ -162,4 +162,36 @@ All colors MUST be HSL.
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+
+  /* Intro overlay transition */
+  .intro-overlay {
+    transition: opacity 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  /* Story surface scroll containment and text reveal */
+  .overscroll-contain {
+    overscroll-behavior: contain;
+  }
+
+  .story-ghost {
+    color: rgba(10, 10, 10, 0.18);
+    -webkit-text-stroke: 0.6px rgba(10, 10, 10, 0.25);
+    text-stroke: 0.6px rgba(10, 10, 10, 0.25);
+  }
+
+  .story-solid {
+    color: #0a0a0a;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.34s steps(var(--chunks, 3), end);
+    will-change: clip-path;
+  }
+
+  #story {
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+  }
+
+  #story.in-view {
+    opacity: 1;
+  }
 }
