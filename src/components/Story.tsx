@@ -38,7 +38,6 @@ const StoryStepper = () => {
 
     const totalChars = chars.length;
     const chunkSize = Math.ceil(totalChars * 0.3); // 30% per scroll
-    let isComplete = false;
 
     // Set initial state - all hidden except first chunk
     gsap.set(chars, { 
@@ -52,63 +51,40 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    // Create scroll-triggered animation
+    // Create scroll-triggered animation with longer duration
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top center",
-      end: "+=4000",
-      scrub: 0.5,
+      end: "+=5000", // Longer scroll distance
+      scrub: 1, // Smoother scrubbing
       pin: false,
       onUpdate: (self) => {
         const progress = self.progress;
         const revealedCount = Math.floor(progress * totalChars);
         const nextChunkEnd = Math.min(revealedCount + chunkSize, totalChars);
         
-        // Move text up as we progress (scroll down illusion)
+        // Move text up as we progress
         const translateY = -(progress * 30); // Move up 30vh total
-        gsap.set(wrapperRef.current, { y: translateY });
+        gsap.to(wrapperRef.current, { y: translateY, duration: 0.1, ease: "none" });
         
         // Show next chunk as ghost
         chars.slice(0, nextChunkEnd).forEach(char => {
-          gsap.set(char, { visibility: "visible" });
+          gsap.to(char, { visibility: "visible", duration: 0 });
         });
         
         // Fill revealed characters
         chars.slice(0, revealedCount).forEach(char => {
-          gsap.set(char, { opacity: 1 });
+          gsap.to(char, { opacity: 1, duration: 0.1 });
         });
         
         // Ghost for upcoming characters
         chars.slice(revealedCount, nextChunkEnd).forEach(char => {
-          gsap.set(char, { opacity: 0.15 });
+          gsap.to(char, { opacity: 0.15, duration: 0.1 });
         });
-
-        // Mark as complete when done
-        isComplete = progress >= 0.99;
       }
     });
 
-    // Block scroll to next section until animation complete
-    const blockScroll = (e: WheelEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect || isComplete) return;
-
-      // Check if we're in the Story section
-      const inSection = rect.top <= window.innerHeight && rect.bottom >= 0;
-      
-      if (inSection && e.deltaY > 0) {
-        const progress = scrollTrigger.progress;
-        if (progress < 0.99) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }
-    };
-
-    document.addEventListener('wheel', blockScroll, { passive: false });
-
     return () => {
-      document.removeEventListener('wheel', blockScroll);
       scrollTrigger.kill();
       splitText.revert();
     };
