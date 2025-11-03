@@ -1,34 +1,51 @@
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 
-/* Inline parachute with proper ref forwarding */
+/* Inline parachute with proper ref forwarding - based on reference design */
 const ParachuteIcon = forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => {
   return (
-    <svg ref={ref} viewBox="0 0 64 64" aria-hidden="true" {...props}>
-      {/* White filled parachute canopy */}
-      <path d="M8 20 Q 32 8 56 20 Q 50 35 32 40 Q 14 35 8 20 Z" fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="2"/>
-      {/* FLENT text - bold and highly visible */}
+    <svg ref={ref} viewBox="0 0 120 160" aria-hidden="true" {...props}>
+      {/* White parachute canopy with panels */}
+      <path d="M10 50 Q 60 10, 110 50 Q 100 75, 60 85 Q 20 75, 10 50 Z" fill="#FFFFFF" stroke="#E0E0E0" strokeWidth="1"/>
+      
+      {/* Canopy panel lines for detail */}
+      <path d="M 30 45 Q 40 20, 60 15" fill="none" stroke="#E0E0E0" strokeWidth="1"/>
+      <path d="M 90 45 Q 80 20, 60 15" fill="none" stroke="#E0E0E0" strokeWidth="1"/>
+      <path d="M 60 15 L 60 75" stroke="#E0E0E0" strokeWidth="1"/>
+      
+      {/* FLENT text - bold and highly visible on canopy */}
       <text 
-        x="32" 
-        y="24" 
+        x="60" 
+        y="50" 
         textAnchor="middle" 
-        fontSize="9" 
+        fontSize="16" 
         fontWeight="900"
         fill="#0A0A0A"
-        style={{fontFamily:"Plus Jakarta Sans,system-ui",letterSpacing:"1px"}}
+        style={{fontFamily:"Plus Jakarta Sans,system-ui",letterSpacing:"1.5px"}}
       >
         FLENT
       </text>
-      {/* Parachute lines */}
-      <line x1="14" y1="28" x2="30" y2="42" stroke="#FFFFFF" strokeWidth="1.5"/>
-      <line x1="32" y1="32" x2="32" y2="42" stroke="#FFFFFF" strokeWidth="1.5"/>
-      <line x1="50" y1="28" x2="34" y2="42" stroke="#FFFFFF" strokeWidth="1.5"/>
-      {/* Stick figure */}
-      <circle cx="32" cy="46" r="2.5" fill="#FFFFFF"/>
-      <line x1="32" y1="48.5" x2="32" y2="56" stroke="#FFFFFF" strokeWidth="2"/>
-      <line x1="32" y1="51" x2="26" y2="54" stroke="#FFFFFF" strokeWidth="2"/>
-      <line x1="32" y1="51" x2="38" y2="54" stroke="#FFFFFF" strokeWidth="2"/>
-      <line x1="32" y1="56" x2="27" y2="62" stroke="#FFFFFF" strokeWidth="2"/>
-      <line x1="32" y1="56" x2="37" y2="62" stroke="#FFFFFF" strokeWidth="2"/>
+      
+      {/* Parachute suspension lines */}
+      <line x1="20" y1="65" x2="55" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      <line x1="40" y1="75" x2="58" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      <line x1="60" y1="80" x2="60" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      <line x1="80" y1="75" x2="62" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      <line x1="100" y1="65" x2="65" y2="95" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9"/>
+      
+      {/* Stick figure person */}
+      {/* Head */}
+      <circle cx="60" cy="105" r="5" fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="1"/>
+      
+      {/* Body */}
+      <line x1="60" y1="110" x2="60" y2="130" stroke="#FFFFFF" strokeWidth="2.5"/>
+      
+      {/* Arms */}
+      <line x1="60" y1="115" x2="50" y2="110" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="115" x2="70" y2="110" stroke="#FFFFFF" strokeWidth="2.5"/>
+      
+      {/* Legs - these will land inline with "Flent" */}
+      <line x1="60" y1="130" x2="52" y2="150" stroke="#FFFFFF" strokeWidth="2.5"/>
+      <line x1="60" y1="130" x2="68" y2="150" stroke="#FFFFFF" strokeWidth="2.5"/>
     </svg>
   );
 });
@@ -120,14 +137,14 @@ export const Hero = () => {
               transform: "translateY(-0.05em)"
             }}
           />
-          {/* parachute - starts from very top of screen, lands inline with text */}
+          {/* parachute - starts from very top, feet land inline with "Flent" */}
           <ParachuteIcon
             ref={chuteRef}
             className="absolute pointer-events-none"
             style={{
               left: "100%",
-              top: "50%",
-              width: "72px",
+              bottom: "0",
+              width: "80px",
               color: "#FFFFFF",
               zIndex: 3,
               transform: "translate(-50%, -120vh)",
@@ -161,6 +178,7 @@ export const Hero = () => {
 /* ---------- animation ---------- */
 function runParachute(chute: Element, dot: HTMLElement) {
   // Slow, smooth parachute fall from very top of screen with gentle S-curve swaying (6 seconds)
+  // Feet land at baseline of text
   const fall = chute.animate(
     [
       { transform: "translate(-50%, -120vh) rotate(0deg)", offset: 0 },
@@ -173,7 +191,7 @@ function runParachute(chute: Element, dot: HTMLElement) {
       { transform: "translate(-65%, -14vh) rotate(-10deg)", offset: 0.70 },
       { transform: "translate(-62%, -7vh) rotate(-7deg)", offset: 0.82 },
       { transform: "translate(-55%, -2vh) rotate(-2deg)", offset: 0.92 },
-      { transform: "translate(-50%, -50%) rotate(0deg)", offset: 1 }
+      { transform: "translate(-50%, 0) rotate(0deg)", offset: 1 }
     ],
     { duration: 6000, easing: "cubic-bezier(0.25, 0.1, 0.25, 1)", fill: "forwards" }
   );
@@ -183,10 +201,10 @@ function runParachute(chute: Element, dot: HTMLElement) {
     chute
       .animate(
         [
-          { transform: "translate(-50%, -50%) rotate(0deg)" },
-          { transform: "translate(-52%, -50%) rotate(-2deg)" },
-          { transform: "translate(-48%, -50%) rotate(1deg)" },
-          { transform: "translate(-50%, -50%) rotate(0deg)" }
+          { transform: "translate(-50%, 0) rotate(0deg)" },
+          { transform: "translate(-52%, 0) rotate(-2deg)" },
+          { transform: "translate(-48%, 0) rotate(1deg)" },
+          { transform: "translate(-50%, 0) rotate(0deg)" }
         ],
         { duration: 800, easing: "ease-out", fill: "forwards" }
       )
