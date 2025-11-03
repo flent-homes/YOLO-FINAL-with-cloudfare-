@@ -36,11 +36,11 @@ const StoryStepper = () => {
       visibility: "visible"
     });
 
-    // Create smooth scroll-triggered animation - text stays in place, just reveals
+    // Create smooth scroll-triggered animation - completes when section ends
     const scrollTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: "+=5000",
+      end: "bottom bottom",
       scrub: 0.5,
       pin: false,
       onUpdate: (self) => {
@@ -76,7 +76,7 @@ const StoryStepper = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-[300vh]">
+    <div ref={containerRef} className="relative min-h-[350vh]">
       <div className="sticky top-0 h-screen flex items-center">
         <div ref={wrapperRef} className="relative w-full">
           {/* top/bottom fades */}
@@ -124,7 +124,7 @@ export const Story = () => {
     <section
       id="story"
       ref={containerRef}
-      className="relative min-h-[300vh] bg-light-bg"
+      className="relative min-h-[350vh] bg-light-bg"
     >
       <div className="sticky top-0 h-screen flex items-center">
         <motion.div 
