@@ -37,7 +37,7 @@ export const Story = () => {
         <motion.div
           data-depth="0.3"
           style={{ y: titleY, opacity: titleOpacity }}
-          className="md:col-span-2 flex flex-col items-center md:items-start gap-3 md:gap-8 relative pb-16 md:pb-48"
+          className="md:col-span-2 flex flex-col items-center md:items-start gap-2.5 md:gap-8 relative pb-18 md:pb-48"
         >
           <div className="text-center md:text-left">
             <span
@@ -57,7 +57,7 @@ export const Story = () => {
           />
         </motion.div>
 
-        <div className="md:col-span-5 relative pt-0.5 md:pt-16 pb-3 md:pb-8">
+        <div className="md:col-span-5 relative pt-0 md:pt-16 pb-4 md:pb-8">
           <motion.div data-depth="0.15" style={{ y: ruleY }} className="absolute -left-8 top-0 bottom-0 w-px bg-dark-text/6" />
 
           <StoryStepper />
