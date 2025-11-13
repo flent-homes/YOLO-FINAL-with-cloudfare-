@@ -1,7 +1,7 @@
 /**
- * YOLO Rewards Worker
+ * YOLO Rewards Worker with Assets
  *
- * This Worker serves the React SPA on /yolo/* paths
+ * This Worker serves the React SPA on /yolo/* paths from static assets
  * and proxies all other traffic to the Webflow origin.
  */
 
@@ -48,11 +48,11 @@ export default {
     }
 
     // For all other paths, proxy to Webflow
-    // Forward the request to the Webflow origin
+    // This code won't actually run when the Worker route is *flent.in/yolo*
+    // but is kept here as a safety fallback
     const webflowOrigin = 'https://flent.webflow.io';
     const webflowUrl = new URL(url.pathname + url.search, webflowOrigin);
 
-    // Create a new request to Webflow
     const webflowRequest = new Request(webflowUrl, {
       method: request.method,
       headers: request.headers,
@@ -60,12 +60,7 @@ export default {
       redirect: 'manual'
     });
 
-    // Fetch from Webflow
     const response = await fetch(webflowRequest);
-
-    // Create a new response with the Webflow response
-    const newResponse = new Response(response.body, response);
-
-    return newResponse;
+    return new Response(response.body, response);
   },
 };
