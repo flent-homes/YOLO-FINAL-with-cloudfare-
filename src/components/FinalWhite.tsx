@@ -225,7 +225,7 @@ export const FinalWhite = () => {
     const sanitizedPhone = phone.trim();
 
     const { error } = await supabase
-      .from("YOLO_referrals")
+      .from("YOLO")
       .insert({ full_name: sanitizedName, phone: sanitizedPhone, source: "final_white" });
 
     setIsSubmitting(false);
