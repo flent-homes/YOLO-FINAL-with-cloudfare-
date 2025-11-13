@@ -86,7 +86,7 @@ const ExperienceTile = ({ experience, onRedeem, onShowDetails, isLocked = false 
   const disableContent = isLocked || experience.placeholder;
 
   return (
-    <div className="bg-light-bg text-dark-text rounded-[28px] border border-dark-text/10 shadow-2xl overflow-hidden flex flex-col w-[min(88vw,420px)]">
+    <div className="bg-light-bg text-dark-text rounded-[28px] border border-dark-text/10 shadow-2xl overflow-hidden flex flex-col w-[min(90vw,380px)] sm:w-[min(85vw,400px)] md:w-[420px]">
       <div className="relative w-full bg-dark-bg" style={{ paddingBottom: "58%" }}>
         {!isLocked ? (
           experience.placeholder ? (
@@ -290,7 +290,7 @@ export const Experience = () => {
         >
         <div className="text-center mb-10 md:mb-12">
           <span
-            className="block text-2xl sm:text-3xl md:text-4xl font-sans font-medium uppercase tracking-[0.16em] text-light-text whitespace-nowrap"
+            className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-sans font-medium uppercase tracking-[0.12em] sm:tracking-[0.16em] text-light-text"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             REFER AND LIVE THE
@@ -311,15 +311,13 @@ export const Experience = () => {
             let zIndex = isCenter ? 30 : 10;
             let isLocked = !isCenter;
 
-            const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
             if (isLeft) {
-              x = isMobile ? -120 : -220;
-              scale = isMobile ? 0.88 : 0.92;
+              x = -180;
+              scale = 0.90;
               opacity = 0.55;
             } else if (isRight) {
-              x = isMobile ? 120 : 220;
-              scale = isMobile ? 0.88 : 0.92;
+              x = 180;
+              scale = 0.90;
               opacity = 0.55;
             } else if (!isCenter) {
               opacity = 0;

@@ -317,7 +317,7 @@ export const FinalWhite = () => {
               className="md:col-span-2 flex justify-center md:justify-start mt-2 mb-16 md:mt-0 md:mb-0 md:-mt-96"
             >
               <div
-                className="relative w-full max-w-[190px] sm:max-w-[220px] h-[220px] sm:h-[240px] md:h-[320px] md:ml-[12.5rem]"
+                className="relative w-full max-w-[190px] sm:max-w-[220px] h-[220px] sm:h-[240px] md:h-[320px] md:ml-32 lg:ml-48"
                 aria-hidden="true"
               >
                 {cardOrder.map((card, index) => {
