@@ -17,7 +17,7 @@ const experiences: ExperienceConfig[] = [
   {
     id: "exclusive-stay",
     expiresIn: 18,
-    amount: "₹40,000",
+    amount: "₹55,000",
     event: "G.O.A.T India Tour 2025",
     minReferrals: 4,
     videoSrc: "/Left%20carousel.png",
@@ -28,7 +28,7 @@ const experiences: ExperienceConfig[] = [
     id: "featured-experience",
     expiresIn: 24,
     expiresAt: "2025-12-05T18:29:00Z",
-    amount: "₹40,000",
+    amount: "₹55,000",
     event: "G.O.A.T India Tour 2025",
     minReferrals: 4,
     videoSrc: "/fonts/messi%20final.mp4",
@@ -37,7 +37,7 @@ const experiences: ExperienceConfig[] = [
   {
     id: "city-pass",
     expiresIn: 12,
-    amount: "₹40,000",
+    amount: "₹55,000",
     event: "G.O.A.T India Tour 2025",
     minReferrals: 4,
     videoSrc: "/Right%20Carousel.png",
