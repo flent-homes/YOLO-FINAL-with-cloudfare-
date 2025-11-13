@@ -47,11 +47,11 @@ export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps
   const displayPhone = phone?.trim() || "your number";
 
   const messages = {
-    whatsapp: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    whatsapp: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most desirable neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
 
-    instagram: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    instagram: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most desirable neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
 
-    generic: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    generic: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most desirable neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
   };
 
   const copyGenericLink = async () => {
