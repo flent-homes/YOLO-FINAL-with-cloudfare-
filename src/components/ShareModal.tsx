@@ -47,11 +47,11 @@ export const ShareModal = ({ isOpen, onClose, fullName, phone }: ShareModalProps
   const displayPhone = phone?.trim() || "your number";
 
   const messages = {
-    whatsapp: `Hey, check out Flent: ${url}\n\nThey offer fully furnished rental homes in Bangalore that are ready to move into. You can either book an entire home or just a room in one!\n\nIf you decide to book, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    whatsapp: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
 
-    instagram: `Hey, check out Flent: ${url}\n\nThey offer fully furnished rental homes in Bangalore that are ready to move into. You can either book an entire home or just a room in one!\n\nIf you decide to book, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    instagram: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
 
-    generic: `Hey, check out Flent: ${url}\n\nThey offer fully furnished rental homes in Bangalore that are ready to move into. You can either book an entire home or just a room in one!\n\nIf you decide to book, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
+    generic: `Hey, check out Flent: ${url}\n\nThey offer tastefully furnished rental homes in the most sought after neighbourhoods of Bangalore. You can rent a room or the entire house, totally up to you :)\n\nIf you end up booking, please mention my name (${displayName}) and my number (${displayPhone}) in the onboarding form.`,
   };
 
   const copyGenericLink = async () => {

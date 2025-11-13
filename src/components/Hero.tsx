@@ -29,7 +29,7 @@ export const Hero = () => {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-end min-h-screen px-6 pb-10 md:pb-6 lg:pb-4">
+      <div className="relative z-10 flex flex-col items-center justify-end min-h-screen px-6 pb-16 md:pb-6 lg:pb-4">
         <button
           onClick={scrollToExperience}
           className="px-7 py-3 rounded-full border border-light-text/70 text-light-text font-sans font-medium backdrop-blur hover:border-white transition"

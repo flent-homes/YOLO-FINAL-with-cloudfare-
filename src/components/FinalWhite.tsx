@@ -421,15 +421,9 @@ export const FinalWhite = () => {
                 <img
                   src="/logo%20flent%20.png"
                   alt="Flent wordmark"
-                className="hidden sm:block sm:h-[260px] sm:translate-x-0 sm:translate-y-0 lg:h-[440px] lg:translate-x-0 lg:absolute lg:top-[-160px] lg:left-[-108px]"
+                  className="hidden sm:block sm:h-[260px] sm:translate-x-0 sm:translate-y-0 lg:h-[440px] lg:translate-x-0 lg:absolute lg:top-[-160px] lg:left-[-108px]"
                   loading="lazy"
                 />
-              <img
-                src="/fonts/final%20ill.png"
-                alt="Experience illustration"
-                className="block md:hidden mb-10 w-[220px] pointer-events-none select-none"
-                loading="lazy"
-              />
                 <div className="mt-0 flex w-full max-w-[360px] flex-col items-center gap-3 text-center sm:mt-[-16px] sm:max-w-[420px] lg:mt-6 lg:max-w-none lg:items-start lg:text-left lg:pl-24 lg:pt-6">
                   <h1 className="block text-3xl font-display text-dark-text sm:hidden">Flent</h1>
                   <p className="text-sm font-sans leading-relaxed text-dark-text/85 sm:text-base md:text-lg">
@@ -472,7 +466,13 @@ export const FinalWhite = () => {
         <img
           src="/fonts/final%20ill.png"
           alt="Experience illustration"
-          className="hidden md:block absolute left-16 bottom-[320px] w-[260px] pointer-events-none select-none"
+          className="hidden md:block absolute left-16 bottom-[300px] w-[260px] pointer-events-none select-none"
+          loading="lazy"
+        />
+        <img
+          src="/fonts/final%20ill.png"
+          alt="Mobile experience illustration"
+          className="block md:hidden mx-auto mt-8 w-[220px] pointer-events-none select-none"
           loading="lazy"
         />
       </section>

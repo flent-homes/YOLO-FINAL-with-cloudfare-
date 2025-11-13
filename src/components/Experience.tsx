@@ -85,7 +85,7 @@ const ExperienceTile = ({ experience, onRedeem, onShowDetails, isLocked = false 
   const disableContent = isLocked || experience.placeholder;
 
   return (
-    <div className="bg-light-bg text-dark-text rounded-[28px] border border-dark-text/10 shadow-2xl overflow-hidden flex flex-col w-[min(92vw,420px)]">
+    <div className="bg-light-bg text-dark-text rounded-[28px] border border-dark-text/10 shadow-2xl overflow-hidden flex flex-col w-[min(88vw,420px)]">
       <div className="relative w-full bg-dark-bg" style={{ paddingBottom: "58%" }}>
         {!isLocked ? (
           experience.placeholder ? (
@@ -297,7 +297,7 @@ export const Experience = () => {
           <h2 className="mt-3 heading-display text-6xl md:text-7xl lg:text-8xl text-light-text tracking-[-0.02em]">Featured Experience</h2>
           </div>
 
-          <div className="relative w-full flex items-center justify-center" style={{ perspective: 1000 }}>
+          <div className="relative w-full overflow-hidden flex items-center justify-center px-5 sm:px-10">
           {experiences.map((experience, index) => {
             const position = (index - activeIndex + experiences.length) % experiences.length;
             const isCenter = position === 0;
@@ -313,11 +313,11 @@ export const Experience = () => {
             const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
             if (isLeft) {
-              x = isMobile ? -160 : -220;
+              x = isMobile ? -120 : -220;
               scale = isMobile ? 0.88 : 0.92;
               opacity = 0.55;
             } else if (isRight) {
-              x = isMobile ? 160 : 220;
+              x = isMobile ? 120 : 220;
               scale = isMobile ? 0.88 : 0.92;
               opacity = 0.55;
             } else if (!isCenter) {
@@ -364,7 +364,7 @@ export const Experience = () => {
       <AnimatePresence>
         {showDetails && (
             <motion.div
-            className="fixed inset-0 z-[100] flex items-center md:items-end justify-start md:justify-center pl-0 pr-28 sm:px-6"
+            className="fixed inset-0 z-[100] flex items-center justify-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -379,11 +379,6 @@ export const Experience = () => {
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
               className="experience-modal-panel relative z-[110] bg-light-bg shadow-2xl"
-              style={
-                {
-                  "--experience-modal-shift": "calc(-8rem - 320px)",
-                } as CSSProperties
-              }
             >
               <div className="flex justify-center pb-3">
                 <span className="h-1.5 w-12 rounded-full bg-dark-text/15" />
