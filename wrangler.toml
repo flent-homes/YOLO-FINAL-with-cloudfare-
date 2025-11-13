@@ -1,0 +1,14 @@
+name = "yolo-rewards"
+compatibility_date = "2025-04-01"
+main = "./worker/index.js"
+
+# Configure static assets for the React SPA
+[assets]
+directory = "./dist-deploy"
+not_found_handling = "single-page-application"
+binding = "ASSETS"
+
+# Route configuration - this will be set up in the Cloudflare dashboard
+# [[routes]]
+# pattern = "flent.in/yolo/*"
+# zone_name = "flent.in"
